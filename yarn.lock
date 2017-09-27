@@ -139,8 +139,8 @@ ansi-styles@^3.0.0:
     color-convert "^1.0.0"
 
 antd@^2.13.2:
-  version "2.13.2"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.2.tgz#381f046b13acfc11d45d71c9a0d36da2ebe42a12"
+  version "2.13.3"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.3.tgz#e54897e471d64d59c01fea6ea41b3ae0eab0984d"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -168,7 +168,7 @@ antd@^2.13.2:
     rc-progress "~2.2.2"
     rc-rate "~2.1.1"
     rc-select "~6.9.0"
-    rc-slider "~8.2.0"
+    rc-slider "~8.3.0"
     rc-steps "~2.5.1"
     rc-switch "~1.5.1"
     rc-table "~5.6.9"
@@ -1987,6 +1987,10 @@ dom-walk@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
 
+dom7@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/dom7/-/dom7-2.0.0.tgz#67ad454f9a7d2cdb53780fa601506dfb7933be81"
+
 domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.npmjs.org/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
@@ -2573,9 +2577,9 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.7, fbjs@^0.8.9:
-  version "0.8.12"
-  resolved "https://registry.npmjs.org/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
+fbjs@^0.8.16, fbjs@^0.8.7, fbjs@^0.8.9:
+  version "0.8.16"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -4072,6 +4076,10 @@ lodash.uniq@^4.5.0:
   version "4.17.4"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
+lodash@^3.9.3:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+
 longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
@@ -5069,11 +5077,12 @@ promise@7.1.1, promise@^7.1.1:
     asap "~2.0.3"
 
 prop-types@15.x, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9:
-  version "15.5.10"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+  version "15.6.0"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
-    fbjs "^0.8.9"
+    fbjs "^0.8.16"
     loose-envify "^1.3.1"
+    object-assign "^4.1.1"
 
 proxy-addr@~1.1.4:
   version "1.1.4"
@@ -5368,9 +5377,9 @@ rc-select@~6.9.0:
     rc-util "^4.0.4"
     warning "2.x"
 
-rc-slider@~8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.2.0.tgz#ae37d17144cad60e1da6eac0ee4ffcfea0b0a6e8"
+rc-slider@~8.3.0:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.3.1.tgz#b64d66ca1d1b755e4b411ca10906767180a7aeff"
   dependencies:
     babel-runtime "6.x"
     classnames "^2.2.5"
@@ -5542,8 +5551,8 @@ react-dev-utils@^3.0.0:
     text-table "0.2.0"
 
 react-dom@^15.6.1:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.1.tgz#2cb0ed4191038e53c209eb3a79a23e2a4cf99470"
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
   dependencies:
     fbjs "^0.8.9"
     loose-envify "^1.1.0"
@@ -5595,7 +5604,7 @@ react-router@^2.8.1:
     loose-envify "^1.2.0"
     warning "^3.0.0"
 
-react-slick@~0.15.0:
+react-slick@^0.15.4, react-slick@~0.15.0:
   version "0.15.4"
   resolved "https://registry.yarnpkg.com/react-slick/-/react-slick-0.15.4.tgz#6709c87b06e7640feeacc06711be42cc2066aabe"
   dependencies:
@@ -5607,9 +5616,15 @@ react-slick@~0.15.0:
     object-assign "^4.1.0"
     slick-carousel "^1.6.0"
 
+react-tinymce@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-tinymce/-/react-tinymce-0.5.1.tgz#8f56b7f81cefed06f4aca6b66c903e2db165c2c4"
+  dependencies:
+    lodash "^3.9.3"
+
 react@^15.6.1:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-15.6.2.tgz#dba0434ab439cfe82f108f0f511663908179aa72"
   dependencies:
     create-react-class "^15.6.0"
     fbjs "^0.8.9"
@@ -6409,6 +6424,12 @@ sw-toolbox@^3.4.0:
   dependencies:
     path-to-regexp "^1.0.1"
     serviceworker-cache-polyfill "^4.0.0"
+
+swiper@^4.0.0-beta.4:
+  version "4.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-4.0.0-beta.4.tgz#5c23c7f85ebbaa8af45b86ab1f6e26de017998e9"
+  dependencies:
+    dom7 "^2.0.0"
 
 symbol-observable@^1.0.3:
   version "1.0.4"

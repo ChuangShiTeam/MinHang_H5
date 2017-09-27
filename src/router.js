@@ -1,7 +1,7 @@
 import React from "react";
 import {Router, Route, IndexRedirect} from "dva/router";
 import Main from "./view/Main";
-import Index from "./view/Index";
+import Index00 from "./view/00/Index";
 
 import constant from "./util/constant";
 
@@ -12,7 +12,7 @@ function RouterConfig({history}) {
             <Route path="/">
                 <IndexRedirect to={constant.index}/>
                 <Route component={Main}>
-                    <Route path="/index" component={Index}/>
+                    <Route path="/00/index" component={Index00}/>
                 </Route>
             </Route>
         </Router>
