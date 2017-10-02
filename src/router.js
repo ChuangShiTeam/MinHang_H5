@@ -1,22 +1,35 @@
-import React from "react";
-import {Router, Route, IndexRedirect} from "dva/router";
-import Main from "./view/Main";
-import Index00 from "./view/00/Index";
-import Index01 from "./view/01/Index";
-import Index02 from "./view/02/Index";
+import React from 'react';
+import {Router, Route, IndexRedirect} from 'dva/router';
+import Main from './view/Main';
+import Index from './view/Index';
+import ArticleIndex from './view/article/ArticleIndex';
+import My from './view/My';
 
-import constant from "./util/constant";
+import constant from './util/constant';
+import notification from './util/notification';
 
 function RouterConfig({history}) {
+
+    const handleEnter = function (next, replace, callback) {
+        callback();
+    };
+
+    const handleChange = function (next, replace, callback) {
+        notification.emit('notification_main_load', {
+            path: replace.location.pathname
+        });
+
+        callback();
+    };
 
     return (
         <Router history={history}>
             <Route path="/">
                 <IndexRedirect to={constant.index}/>
-                <Route component={Main}>
-                    <Route path="/00/index" component={Index00}/>
-                    <Route path="/01/index" component={Index01}/>
-                    <Route path="/02/index" component={Index02}/>
+                <Route component={Main} onEnter={handleEnter} onChange={handleChange}>
+                    <Route path="/index" component={Index}/>
+                    <Route path="/article/index" component={ArticleIndex}/>
+                    <Route path="/my" component={My}/>
                 </Route>
             </Route>
         </Router>

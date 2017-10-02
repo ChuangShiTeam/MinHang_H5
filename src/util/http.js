@@ -1,5 +1,5 @@
 import reqwest from 'reqwest';
-import {message} from 'antd';
+import {Toast} from 'antd-mobile';
 
 import constant from './constant';
 import storage from './storage';
@@ -22,11 +22,11 @@ function request(config) {
             if (response.code === 200) {
                 config.success(response.data);
             } else {
-                message.error(response.message);
+                Toast.fail(response.message, 1);
             }
         },
         error: function () {
-            message.error(constant.error);
+            Toast.fail(constant.error, 1);
         },
         complete: function () {
             config.complete();
