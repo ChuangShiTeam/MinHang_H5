@@ -138,7 +138,7 @@ ansi-styles@^3.0.0:
   dependencies:
     color-convert "^1.0.0"
 
-antd@^2.13.2:
+antd@^2.13.3:
   version "2.13.3"
   resolved "https://registry.yarnpkg.com/antd/-/antd-2.13.3.tgz#e54897e471d64d59c01fea6ea41b3ae0eab0984d"
   dependencies:
@@ -1986,10 +1986,6 @@ dom-urls@^1.1.0:
 dom-walk@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
-
-dom7@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/dom7/-/dom7-2.0.0.tgz#67ad454f9a7d2cdb53780fa601506dfb7933be81"
 
 domain-browser@^1.1.1:
   version "1.1.7"
@@ -6424,12 +6420,6 @@ sw-toolbox@^3.4.0:
   dependencies:
     path-to-regexp "^1.0.1"
     serviceworker-cache-polyfill "^4.0.0"
-
-swiper@^4.0.0-beta.4:
-  version "4.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-4.0.0-beta.4.tgz#5c23c7f85ebbaa8af45b86ab1f6e26de017998e9"
-  dependencies:
-    dom7 "^2.0.0"
 
 symbol-observable@^1.0.3:
   version "1.0.4"
