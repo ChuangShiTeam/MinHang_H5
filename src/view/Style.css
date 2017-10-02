@@ -1,0 +1,59 @@
+body, html {
+    font-family: PingFang SC, Helvetica Neue, Hiragino Sans GB, Helvetica, Microsoft YaHei, Arial;
+}
+
+.loading-mask {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-color: #ffffff;
+    z-index: 99999;
+}
+
+.loading-mask-hide {
+    pointer-events: none;
+    -webkit-animation: fadeOut ease 0.5s forwards;
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1
+    }
+
+    100% {
+        opacity: 0
+    }
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -25px;
+    margin-left: -25px;
+}
+
+.empty-image {
+    position: absolute;
+    top: 50%;
+    margin-top: -200px;
+    left: 50%;
+    margin-left: -60px;
+    width: 120px;
+    height: 120px;
+}
+
+.empty-text {
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    left: 50%;
+    margin-left: -100px;
+    width: 200px;
+    height: 120px;
+    color: #888888;
+    font-size: 28px;
+    text-align: center;
+}
