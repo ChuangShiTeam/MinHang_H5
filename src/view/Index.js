@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, List} from 'antd-mobile';
 
 import constant from '../util/constant';
 import http from '../util/http';
@@ -11,7 +11,7 @@ class Index extends Component {
         super(props);
 
         this.state = {
-
+            list: []
         }
     }
 
@@ -33,9 +33,32 @@ class Index extends Component {
     }
 
     render() {
+        const Item = List.Item;
+        const Brief = Item.Brief;
+
         return (
             <div>
-                <WhiteSpace size="lg"/>
+                {
+                    this.props.index.list.length > 0 ?
+                        <List>
+                            {
+                                this.props.index.list.map((item) => {
+                                    return (
+                                        <Item
+                                            arrow="horizontal"
+                                            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                                            multipleLine
+                                            onClick={() => {}}
+                                        >
+                                            Title <Brief>subtitle</Brief>
+                                        </Item>
+                                    );
+                                })
+                            }
+                        </List>
+                        :
+                        ''
+                }
                 {
                     this.props.index.is_load && this.props.index.length === 0 ?
                         <div>

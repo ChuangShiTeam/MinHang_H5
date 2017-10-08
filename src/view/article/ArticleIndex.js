@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {ActivityIndicator, WhiteSpace} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, Carousel, List} from 'antd-mobile';
 
 import constant from '../../util/constant';
 import http from '../../util/http';
@@ -32,9 +32,50 @@ class ArticleIndex extends Component {
     }
 
     render() {
+        const Item = List.Item;
+        const Brief = Item.Brief;
+
         return (
             <div>
-                <WhiteSpace size="lg"/>
+                {
+                    this.props.article.list.length > 0 ?
+                        <div style={{height: document.documentElement.clientWidth * 0.4 + 'px'}}>
+                            <Carousel autoplay infinite>
+                                {
+                                    this.props.article.list.map((item, index) => {
+                                        return (
+                                            <img key={index} src=''
+                                                 style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.4 + 'px'}}
+                                                 alt=""/>
+                                        );
+                                    })
+                                }
+                            </Carousel>
+                        </div>
+                        :
+                        ''
+                }
+                {
+                    this.props.article.list.length > 0 ?
+                        <List>
+                            {
+                                this.props.article.list.map((item) => {
+                                    return (
+                                        <Item
+                                            arrow="horizontal"
+                                            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                                            multipleLine
+                                            onClick={() => {}}
+                                        >
+                                            Title <Brief>subtitle</Brief>
+                                        </Item>
+                                    );
+                                })
+                            }
+                        </List>
+                        :
+                        ''
+                }
                 {
                     this.props.article.is_load && this.props.article.length === 0 ?
                         <div>

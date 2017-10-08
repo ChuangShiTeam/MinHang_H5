@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "dva";
 import {routerRedux} from "dva/router";
-import {ActivityIndicator, WhiteSpace} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, List} from 'antd-mobile';
 import http from "../util/http";
 import storage from "../util/storage";
 
@@ -32,18 +32,21 @@ class My extends Component {
     }
 
     render() {
+        const Item = List.Item;
+        const Brief = Item.Brief;
+
         return (
             <div>
-                <WhiteSpace size="lg"/>
-                {
-                    this.props.my.is_load && this.props.my.length === 0 ?
-                        <div>
-                            <img src={require('../assets/svg/empty.svg')} className="empty-image" alt=""/>
-                            <div className="empty-text">没有数据</div>
-                        </div>
-                        :
-                        ''
-                }
+                <List>
+                    <Item
+                        arrow="horizontal"
+                        thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                        multipleLine
+                        onClick={() => {}}
+                    >
+                        Title <Brief>subtitle</Brief>
+                    </Item>
+                </List>
                 {
                     this.props.my.is_load ?
                         ''

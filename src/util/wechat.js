@@ -42,10 +42,23 @@ function auth() {
                     nonceStr: data.nonceStr,
                     signature: data.signature,
                     jsApiList: [
-                        'checkJsApi',
-                        'onMenuShareTimeline',
-                        'onMenuShareAppMessage',
-                        'chooseWXPay'
+                        'startRecord',
+                        'stopRecord',
+                        'onVoiceRecordEnd',
+                        'playVoice',
+                        'pauseVoice',
+                        'stopVoice',
+                        'onVoicePlayEnd',
+                        'uploadVoice',
+                        'downloadVoice',
+                        'chooseImage',
+                        'previewImage',
+                        'uploadImage',
+                        'downloadImage',
+                        'translateVoice',
+                        'openLocation',
+                        'getLocation',
+                        'scanQRCode'
                     ]
                 });
 
