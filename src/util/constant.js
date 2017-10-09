@@ -1,10 +1,12 @@
 export default {
+    socket: 'http://localhost:2998',
+    // socket: 'http://api.chuangshi.nowui.com:2998',
     // host: 'http://localhost:8080',
     is_test: true,
     host: 'http://api.chuangshi.nowui.com',
     // is_test: false,
     platform: 'H5',
-    version: '9.9.8',
+    version: '1.0.0',
     name: '闵行党建',
     h5Host: 'http://h5.xingxiao.nowui.com/?#/',
     app_id: 'df2078d6c9eb46babb0df957127273ab',
