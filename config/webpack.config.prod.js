@@ -255,7 +255,7 @@ module.exports = {
                     {
                         loader: require.resolve('less-loader'),
                         options: {
-                            modifyVars: {"@brand-primary": "#c81623", "@brand-primary-tap": "#d40c1a"},
+                            modifyVars: {"@brand-primary": "#d3414c", "@brand-primary-tap": "#d40c1a"},
                         },
                     },
                 ],

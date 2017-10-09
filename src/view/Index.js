@@ -11,7 +11,7 @@ class Index extends Component {
         super(props);
 
         this.state = {
-            list: []
+
         }
     }
 
@@ -32,12 +32,20 @@ class Index extends Component {
 
     }
 
+    handleKey(index) {
+        this.props.dispatch(routerRedux.push({
+            pathname: '/key/' + index,
+            query: {},
+        }));
+    }
+
     render() {
         const Item = List.Item;
         const Brief = Item.Brief;
 
         return (
             <div>
+                <img src={require('../assets/image/banner.jpg')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.48 + 'px'}} alt=""/>
                 {
                     this.props.index.list.length > 0 ?
                         <List>
@@ -45,12 +53,13 @@ class Index extends Component {
                                 this.props.index.list.map((item) => {
                                     return (
                                         <Item
+                                            key={item.id}
                                             arrow="horizontal"
                                             thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
                                             multipleLine
-                                            onClick={() => {}}
+                                            onClick={this.handleKey.bind(this, 0)}
                                         >
-                                            Title <Brief>subtitle</Brief>
+                                            {item.name} <Brief>subtitle</Brief>
                                         </Item>
                                     );
                                 })

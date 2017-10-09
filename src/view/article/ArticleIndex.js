@@ -39,13 +39,13 @@ class ArticleIndex extends Component {
             <div>
                 {
                     this.props.article.list.length > 0 ?
-                        <div style={{height: document.documentElement.clientWidth * 0.4 + 'px'}}>
+                        <div style={{height: document.documentElement.clientWidth * 0.48 + 'px'}}>
                             <Carousel autoplay infinite>
                                 {
                                     this.props.article.list.map((item, index) => {
                                         return (
-                                            <img key={index} src=''
-                                                 style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.4 + 'px'}}
+                                            <img key={index} src={require('../../assets/image/banner.jpg')}
+                                                 style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.48 + 'px'}}
                                                  alt=""/>
                                         );
                                     })

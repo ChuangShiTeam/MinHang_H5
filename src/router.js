@@ -2,6 +2,7 @@ import React from 'react';
 import {Router, Route, IndexRedirect} from 'dva/router';
 import Main from './view/Main';
 import Index from './view/Index';
+import Key0 from './view/key0/Index';
 import ArticleIndex from './view/article/ArticleIndex';
 import My from './view/My';
 
@@ -31,6 +32,7 @@ function RouterConfig({history}) {
                     <Route path="/article/index" component={ArticleIndex}/>
                     <Route path="/my" component={My}/>
                 </Route>
+                <Route path="/key/0" component={Key0}/>
             </Route>
         </Router>
     );
