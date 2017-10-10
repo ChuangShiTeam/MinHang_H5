@@ -31,6 +31,13 @@ class ArticleIndex extends Component {
 
     }
 
+    handleArticle(article_id) {
+        this.props.dispatch(routerRedux.push({
+            pathname: '/article/detail/' + article_id,
+            query: {},
+        }));
+    }
+
     render() {
         const Item = List.Item;
         const Brief = Item.Brief;
@@ -63,9 +70,9 @@ class ArticleIndex extends Component {
                                     return (
                                         <Item
                                             arrow="horizontal"
-                                            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                                            thumb={<img src={require('../../assets/image/banner.jpg')} style={{width: '200px',  height: '96px'}} alt=""/>}
                                             multipleLine
-                                            onClick={() => {}}
+                                            onClick={this.handleArticle.bind(this, item.article_id)}
                                         >
                                             Title <Brief>subtitle</Brief>
                                         </Item>

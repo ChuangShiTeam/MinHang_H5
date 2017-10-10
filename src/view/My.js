@@ -9,9 +9,7 @@ class My extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            is_load: this.props.my.is_load
-        }
+        this.state = {}
     }
 
     componentDidMount() {
@@ -39,12 +37,20 @@ class My extends Component {
             <div>
                 <List>
                     <Item
-                        arrow="horizontal"
-                        thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                        thumb={<img src={require('../assets/image/banner.jpg')} style={{width: '100px',  height: '100px'}} alt=""/>}
                         multipleLine
                         onClick={() => {}}
                     >
-                        Title <Brief>subtitle</Brief>
+                        user name
+                    </Item>
+                </List>
+
+                <WhiteSpace size="lg"/>
+                <List>
+                    <Item
+                        thumb={require('../assets/svg/search.svg')} arrow="horizontal"
+                    >
+                        我的钥匙
                     </Item>
                 </List>
                 {

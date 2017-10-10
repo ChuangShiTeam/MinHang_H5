@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
+import {ActivityIndicator, WhiteSpace} from 'antd-mobile';
 
 import http from '../../util/http';
 import validate from '../../util/validate';
@@ -10,6 +11,7 @@ class ArticleDetail extends Component {
         super(props);
 
         this.state = {
+            is_load: false,
             article: {},
         };
     }
@@ -26,6 +28,14 @@ class ArticleDetail extends Component {
         return (
             <div>
 
+                {
+                    this.state.is_load ?
+                        ''
+                        :
+                        <div className={'loading-mask ' + (this.state.is_load ? 'loading-mask-hide' : '')}>
+                            <div className="loading"><ActivityIndicator/></div>
+                        </div>
+                }
             </div>
         );
     }

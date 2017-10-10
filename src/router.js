@@ -4,6 +4,7 @@ import Main from './view/Main';
 import Index from './view/Index';
 import Key0 from './view/key0/Index';
 import ArticleIndex from './view/article/ArticleIndex';
+import ArticleDetail from './view/article/ArticleDetail';
 import My from './view/My';
 
 import constant from './util/constant';
@@ -30,6 +31,7 @@ function RouterConfig({history}) {
                 <Route component={Main} onEnter={handleEnter} onChange={handleChange}>
                     <Route path="/index" component={Index}/>
                     <Route path="/article/index" component={ArticleIndex}/>
+                    <Route path="/article/detail/:article_id" component={ArticleDetail}/>
                     <Route path="/my" component={My}/>
                 </Route>
                 <Route path="/key/0" component={Key0}/>

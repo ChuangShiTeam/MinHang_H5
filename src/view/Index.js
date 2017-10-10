@@ -55,7 +55,7 @@ class Index extends Component {
                                         <Item
                                             key={item.id}
                                             arrow="horizontal"
-                                            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                                            thumb={<img src={require('../assets/image/banner.jpg')} style={{width: '200px',  height: '96px'}} alt=""/>}
                                             multipleLine
                                             onClick={this.handleKey.bind(this, 0)}
                                         >
