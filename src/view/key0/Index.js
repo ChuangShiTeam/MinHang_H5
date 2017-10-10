@@ -32,9 +32,20 @@ class Index extends Component {
 
     }
 
+    handleQRCode() {
+        console.log(123);
+        window.wx.scanQRCode({
+            needResult: 1,
+            scanType: ["qrCode"],
+            success: function (response) {
+                console.log(response);
+            }
+        });
+        console.log(456);
+    }
+
     render() {
         const Item = List.Item;
-        const Brief = Item.Brief;
         const Step = Steps.Step;
 
         return (
@@ -55,7 +66,7 @@ class Index extends Component {
                     <WhiteSpace size="lg"/>
                     <WhiteSpace size="lg"/>
                     <WhiteSpace size="lg"/>
-                    <Button>扫二维码</Button>
+                    <Button onClick={this.handleQRCode.bind(this)}>扫二维码</Button>
                 </WingBlank>
                 {
                     this.props.index.is_load && this.props.index.length === 0 ?

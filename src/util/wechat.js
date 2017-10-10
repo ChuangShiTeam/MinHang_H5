@@ -29,14 +29,14 @@ function auth() {
         storage.setOpenId(open_id);
     }
 
-    if (!constant.is_test) {
+    if (constant.is_test) {
         http.request({
-            // url: '/wechat/config?app_id=' + constant.app_id + '&url=http://h5.xingxiao.nowui.com/#/index',
+            // url: '/wechat/config?app_id=' + constant.app_id + '&url=http://h5.jiyguan.nowui.com/#/index',
             url: '/wechat/config?app_id=' + constant.app_id + '&url=' + document.location.href,
             data: {},
             success: function (data) {
                 window.wx.config({
-                    debug: false,
+                    debug: true,
                     appId: constant.wechat_app_id,
                     timestamp: data.timestamp,
                     nonceStr: data.nonceStr,

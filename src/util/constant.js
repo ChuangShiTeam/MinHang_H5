@@ -1,6 +1,6 @@
 export default {
-    socket: 'http://localhost:2998',
-    // socket: 'http://api.chuangshi.nowui.com:2998',
+    // socket: 'http://localhost:2998',
+    socket: 'http://api.chuangshi.nowui.com:2998',
     // host: 'http://localhost:8080',
     is_test: true,
     host: 'http://api.chuangshi.nowui.com',
@@ -10,7 +10,7 @@ export default {
     name: '闵行党建',
     h5Host: 'http://h5.xingxiao.nowui.com/?#/',
     app_id: 'df2078d6c9eb46babb0df957127273ab',
-    wechat_app_id: 'wx26c8db6f1987e4e0',
+    wechat_app_id: 'wxb4b0bdb35f145759',
     index: 'index',
     menu: [{
         key: 'index',
