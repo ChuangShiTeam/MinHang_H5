@@ -36,7 +36,7 @@ function auth() {
             data: {},
             success: function (data) {
                 window.wx.config({
-                    debug: true,
+                    debug: false,
                     appId: constant.wechat_app_id,
                     timestamp: data.timestamp,
                     nonceStr: data.nonceStr,
