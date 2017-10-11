@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, WingBlank, Steps, List, Button} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button} from 'antd-mobile';
 
 import constant from '../../util/constant';
 import http from '../../util/http';
@@ -18,10 +18,10 @@ class Index extends Component {
     componentDidMount() {
         document.title = "寻匙之旅，解锁党建";
 
-        document.body.scrollTop = this.props.index.scroll_top;
+        document.body.scrollTop = this.props.key0.scroll_top;
 
         this.props.dispatch({
-            type: 'index/fetch',
+            type: 'key0/fetch',
             data: {
                 is_load: true
             }
@@ -32,8 +32,16 @@ class Index extends Component {
 
     }
 
+    handleSegmentedControl(event) {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                step: event.nativeEvent.selectedSegmentIndex
+            }
+        });
+    }
+
     handleQRCode() {
-        console.log(123);
         window.wx.scanQRCode({
             needResult: 1,
             scanType: ["qrCode"],
@@ -51,25 +59,49 @@ class Index extends Component {
         return (
             <div>
                 <WhiteSpace size="lg"/>
-                <WingBlank mode={20} className="stepsExample">
-                    <Steps current={1} direction="horizontal">
-                        <Step title="第一步" description="扫二维码" />
-                        <Step title="第二步" description="扫二维码" />
-                        <Step title="第三步" description="扫二维码" />
-                    </Steps>
+                <WingBlank mode={20}>
+                    <SegmentedControl selectedIndex={this.props.key0.step} values={['切换一', '切换二', '切换三']} onChange={this.handleSegmentedControl.bind(this)} />
                     <WhiteSpace size="lg"/>
                     <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
-                    <Button onClick={this.handleQRCode.bind(this)}>扫二维码</Button>
+                    {
+                        this.props.key0.step == 0 ?
+                            <div>
+                                <Steps current={1} direction="horizontal">
+                                    <Step title="第一步" description="" />
+                                    <Step title="第二步" description="" />
+                                    <Step title="第三步" description="" />
+                                </Steps>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <Button onClick={this.handleQRCode.bind(this)}>扫二维码</Button>
+                            </div>
+                            :
+                            ''
+                    }
+                    {
+                        this.props.key0.step == 1 ?
+                            <div>
+                            </div>
+                            :
+                            ''
+                    }
+                    {
+                        this.props.key0.step == 2 ?
+                            <div>
+                            </div>
+                            :
+                            ''
+                    }
                 </WingBlank>
                 {
-                    this.props.index.is_load && this.props.index.length === 0 ?
+                    this.props.key0.is_load && this.props.key0.length === 0 ?
                         <div>
                             <img src={require('../../assets/svg/empty.svg')} className="empty-image" alt=""/>
                             <div className="empty-text">没有数据</div>
@@ -78,10 +110,10 @@ class Index extends Component {
                         ''
                 }
                 {
-                    this.props.index.is_load ?
+                    this.props.key0.is_load ?
                         ''
                         :
-                        <div className={'loading-mask ' + (this.props.index.is_load ? 'loading-mask-hide' : '')}>
+                        <div className={'loading-mask ' + (this.props.key0.is_load ? 'loading-mask-hide' : '')}>
                             <div className="loading"><ActivityIndicator/></div>
                         </div>
                 }
@@ -90,4 +122,4 @@ class Index extends Component {
     }
 }
 
-export default connect(({index}) => ({index}))(Index);
+export default connect(({key0}) => ({key0}))(Index);

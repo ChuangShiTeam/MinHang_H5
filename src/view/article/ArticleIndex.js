@@ -69,6 +69,7 @@ class ArticleIndex extends Component {
                                 this.props.article.list.map((item) => {
                                     return (
                                         <Item
+                                            key={item.article_id}
                                             arrow="horizontal"
                                             thumb={<img src={require('../../assets/image/banner.jpg')} style={{width: '200px',  height: '96px'}} alt=""/>}
                                             multipleLine

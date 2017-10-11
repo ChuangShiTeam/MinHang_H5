@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
-import io from 'socket.io-client';
 import {routerRedux} from 'dva/router';
 
 import { TabBar } from 'antd-mobile';
@@ -23,28 +22,6 @@ class Main extends Component {
 
         notification.on('notification_main_load', this, function (data) {
             this.handleMenu(data.path);
-        });
-
-        window.socket = io(constant.socket);
-
-        window.socket.on('connect', function () {
-            window.socket.emit('login', {
-                id: 8
-            }, function (response) {
-                if (response.code === 200) {
-                    window.socket.on('receiveMessage', function (data) {
-                        notification.emit('event', {});
-                    });
-
-                    window.socket.emit('sendMessage', {
-                        targetId: 0,
-                        action: 'event',
-                        content: '123456'
-                    }, function (response) {
-
-                    });
-                }
-            });
         });
     }
 
