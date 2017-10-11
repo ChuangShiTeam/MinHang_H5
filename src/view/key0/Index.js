@@ -16,7 +16,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        document.title = "寻匙之旅，解锁党建";
+        document.title = "激情之匙";
 
         document.body.scrollTop = this.props.key0.scroll_top;
 

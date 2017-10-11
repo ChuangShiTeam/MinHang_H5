@@ -18,23 +18,42 @@ class Index extends Component {
     componentDidMount() {
         document.title = "寻匙之旅，解锁党建";
 
-        document.body.scrollTop = this.props.index.scroll_top;
-
-        this.props.dispatch({
-            type: 'index/fetch',
-            data: {
-                is_load: true
-            }
-        });
+        this.handleLoadKey();
     }
 
     componentWillUnmount() {
 
     }
 
-    handleKey(index) {
+    handleLoadKey() {
+        http.request({
+            url: '/mobile/minhang/key/list',
+            data: {},
+            success: function (data) {
+                this.props.dispatch({
+                    type: 'index/fetch',
+                    data: {
+                        list: data
+                    }
+                });
+            }.bind(this),
+            complete: function () {
+                document.body.scrollTop = this.props.index.scroll_top;
+
+                this.props.dispatch({
+                    type: 'index/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
+    }
+
+
+    handleKey(key_id) {
         this.props.dispatch(routerRedux.push({
-            pathname: '/key/' + index,
+            pathname: '/key/' + key_id,
             query: {},
         }));
     }
@@ -53,13 +72,13 @@ class Index extends Component {
                                 this.props.index.list.map((item) => {
                                     return (
                                         <Item
-                                            key={item.id}
+                                            key={item.key_id}
                                             arrow="horizontal"
-                                            thumb={<img src={require('../assets/image/banner.jpg')} style={{width: '200px',  height: '96px'}} alt=""/>}
+                                            thumb={<img src={item.key_image_file.file_path?constant.host + item.key_image_file.file_path:null} style={{width: '200px',  height: '96px'}} alt=""/>}
                                             multipleLine
-                                            onClick={this.handleKey.bind(this, 0)}
+                                            onClick={this.handleKey.bind(this, item.key_id)}
                                         >
-                                            {item.name} <Brief>subtitle</Brief>
+                                            {item.key_name} <Brief>{item.key_description}</Brief>
                                         </Item>
                                     );
                                 })
@@ -77,6 +96,7 @@ class Index extends Component {
                         :
                         ''
                 }
+                <WhiteSpace size="lg"/>
                 {
                     this.props.index.is_load ?
                         ''

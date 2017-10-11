@@ -34,7 +34,7 @@ function RouterConfig({history}) {
                     <Route path="/article/detail/:article_id" component={ArticleDetail}/>
                     <Route path="/my" component={My}/>
                 </Route>
-                <Route path="/key/0" component={Key0}/>
+                <Route path="/key/f9892bc1d79c46e2a06042a935ac02fb" component={Key0}/>
             </Route>
         </Router>
     );
