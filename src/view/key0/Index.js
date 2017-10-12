@@ -18,18 +18,43 @@ class Index extends Component {
     componentDidMount() {
         document.title = "激情之匙";
 
-        document.body.scrollTop = this.props.key0.scroll_top;
+        this.handleLoadKey();
 
-        this.props.dispatch({
-            type: 'key0/fetch',
-            data: {
-                is_load: true
-            }
-        });
     }
 
     componentWillUnmount() {
 
+    }
+
+    handleLoadKey() {
+        http.request({
+            url: '/mobile/minhang/key/find',
+            data: {},
+            success: function (data) {
+                let step = 0;
+                if (data.member_key && data.member_key.key_is_activated) {
+                    step = 2;
+                }
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        key: data.key,
+                        member_key: data.member_key,
+                        step: step
+                    }
+                });
+            }.bind(this),
+            complete: function () {
+                document.body.scrollTop = this.props.index.scroll_top;
+
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
     }
 
     handleSegmentedControl(event) {
@@ -46,10 +71,56 @@ class Index extends Component {
             needResult: 1,
             scanType: ["qrCode"],
             success: function (response) {
+                let result = JSON.parse(response.resultStr);
+                if (result) {
+                    this.props.dispatch({
+                        type: 'key0/fetch',
+                        data: {
+                            task_id: result.task_id,
+                            secene_id: result.secene_id,
+                            action: result.action
+                        }
+                    });
+                    this.handleLoadTask();
+                }
                 console.log(response);
             }
         });
-        console.log(456);
+    }
+
+    handleLoadTask() {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_load: false
+            }
+        });
+        http.request({
+            url: '/mobile/minhang/task/find',
+            data: {},
+            success: function (data) {
+                let step = 1;
+                if (data.member_task) {
+                    step = 2
+                }
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        task: data.task,
+                        member_task: data.member_task?data.member_task:null,
+                        step: step
+                    }
+                });
+            }.bind(this),
+            complete: function () {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
     }
 
     render() {
@@ -88,6 +159,31 @@ class Index extends Component {
                     {
                         this.props.key0.step == 1 ?
                             <div>
+                                {
+                                    this.props.key0.task?
+                                    <div>
+                                        {
+                                            this.props.key0.task.task_type === 'QUESTION' ?
+                                                this.props.key0.task.question_list.map((question, index) => {
+                                                    if (question.question_type === 'RADIO') {
+                                                        return '单选题';
+                                                    } else if (question.question_type === 'check') {
+                                                        return '复选题';
+                                                    } else if (question.question_type === 'GAP_FILLING') {
+                                                        return '填空题';
+                                                    }
+                                                    return null;
+                                                })
+                                                :
+                                            this.props.key0.task.task_type === 'PICTURE' ? '上传图片'
+                                                :
+                                            this.props.key0.task.task_type === 'RECORD' ? '上传录音'
+                                                : null
+                                        }
+                                    </div>
+                                    :
+                                    ''
+                                }
                             </div>
                             :
                             ''
@@ -95,6 +191,7 @@ class Index extends Component {
                     {
                         this.props.key0.step == 2 ?
                             <div>
+                                恭喜你完成任务获得激情钥匙一枚
                             </div>
                             :
                             ''
