@@ -29,7 +29,9 @@ class Index extends Component {
     handleLoadKey() {
         http.request({
             url: '/mobile/minhang/key/find',
-            data: {},
+            data: {
+                key_id: this.props.key0.key_id
+            },
             success: function (data) {
                 let step = 0;
                 if (data.member_key && data.member_key.key_is_activated) {
@@ -45,7 +47,7 @@ class Index extends Component {
                 });
             }.bind(this),
             complete: function () {
-                document.body.scrollTop = this.props.index.scroll_top;
+                document.body.scrollTop = this.props.key0.scroll_top;
 
                 this.props.dispatch({
                     type: 'key0/fetch',
@@ -57,22 +59,14 @@ class Index extends Component {
         });
     }
 
-    handleSegmentedControl(event) {
-        this.props.dispatch({
-            type: 'key0/fetch',
-            data: {
-                step: event.nativeEvent.selectedSegmentIndex
-            }
-        });
-    }
-
     handleQRCode() {
         window.wx.scanQRCode({
             needResult: 1,
             scanType: ["qrCode"],
             success: function (response) {
+                console.log(response.resultStr);
                 let result = JSON.parse(response.resultStr);
-                if (result) {
+                if (result && result.task_id) {
                     this.props.dispatch({
                         type: 'key0/fetch',
                         data: {
@@ -131,17 +125,14 @@ class Index extends Component {
             <div>
                 <WhiteSpace size="lg"/>
                 <WingBlank mode={20}>
-                    <SegmentedControl selectedIndex={this.props.key0.step} values={['切换一', '切换二', '切换三']} onChange={this.handleSegmentedControl.bind(this)} />
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
+                    <Steps current={this.props.key0.step } direction="horizontal">
+                        <Step title="第一步" description="" />
+                        <Step title="第二步" description="" />
+                        <Step title="第三步" description="" />
+                    </Steps>
                     {
                         this.props.key0.step == 0 ?
                             <div>
-                                <Steps current={1} direction="horizontal">
-                                    <Step title="第一步" description="" />
-                                    <Step title="第二步" description="" />
-                                    <Step title="第三步" description="" />
-                                </Steps>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
