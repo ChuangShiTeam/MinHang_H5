@@ -8,8 +8,8 @@ export default {
     platform: 'H5',
     version: '1.0.0',
     name: '闵行党建',
-    h5Host: 'http://h5.xingxiao.nowui.com/?#/',
-    app_id: 'df2078d6c9eb46babb0df957127273ab',
+    h5Host: 'http://h5.minhang.nowui.com/?#/',
+    app_id: '8acc2d49ad014f418878d1a16336c16b',
     wechat_app_id: 'wxb4b0bdb35f145759',
     index: 'index',
     menu: [{

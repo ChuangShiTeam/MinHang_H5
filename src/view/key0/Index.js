@@ -16,28 +16,46 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        document.title = "寻匙之旅，解锁党建";
+        document.title = "激情之匙";
 
-        document.body.scrollTop = this.props.key0.scroll_top;
+        this.handleLoadKey();
 
-        this.props.dispatch({
-            type: 'key0/fetch',
-            data: {
-                is_load: true
-            }
-        });
     }
 
     componentWillUnmount() {
 
     }
 
-    handleSegmentedControl(event) {
-        this.props.dispatch({
-            type: 'key0/fetch',
+    handleLoadKey() {
+        http.request({
+            url: '/mobile/minhang/key/find',
             data: {
-                step: event.nativeEvent.selectedSegmentIndex
-            }
+                key_id: this.props.key0.key_id
+            },
+            success: function (data) {
+                let step = 0;
+                if (data.member_key && data.member_key.key_is_activated) {
+                    step = 2;
+                }
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        key: data.key,
+                        member_key: data.member_key,
+                        step: step
+                    }
+                });
+            }.bind(this),
+            complete: function () {
+                document.body.scrollTop = this.props.key0.scroll_top;
+
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
         });
     }
 
@@ -46,10 +64,57 @@ class Index extends Component {
             needResult: 1,
             scanType: ["qrCode"],
             success: function (response) {
+                console.log(response.resultStr);
+                let result = JSON.parse(response.resultStr);
+                if (result && result.task_id) {
+                    this.props.dispatch({
+                        type: 'key0/fetch',
+                        data: {
+                            task_id: result.task_id,
+                            secene_id: result.secene_id,
+                            action: result.action
+                        }
+                    });
+                    this.handleLoadTask();
+                }
                 console.log(response);
             }
         });
-        console.log(456);
+    }
+
+    handleLoadTask() {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_load: false
+            }
+        });
+        http.request({
+            url: '/mobile/minhang/task/find',
+            data: {},
+            success: function (data) {
+                let step = 1;
+                if (data.member_task) {
+                    step = 2
+                }
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        task: data.task,
+                        member_task: data.member_task?data.member_task:null,
+                        step: step
+                    }
+                });
+            }.bind(this),
+            complete: function () {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
     }
 
     render() {
@@ -60,17 +125,14 @@ class Index extends Component {
             <div>
                 <WhiteSpace size="lg"/>
                 <WingBlank mode={20}>
-                    <SegmentedControl selectedIndex={this.props.key0.step} values={['切换一', '切换二', '切换三']} onChange={this.handleSegmentedControl.bind(this)} />
-                    <WhiteSpace size="lg"/>
-                    <WhiteSpace size="lg"/>
+                    <Steps current={this.props.key0.step } direction="horizontal">
+                        <Step title="第一步" description="" />
+                        <Step title="第二步" description="" />
+                        <Step title="第三步" description="" />
+                    </Steps>
                     {
                         this.props.key0.step == 0 ?
                             <div>
-                                <Steps current={1} direction="horizontal">
-                                    <Step title="第一步" description="" />
-                                    <Step title="第二步" description="" />
-                                    <Step title="第三步" description="" />
-                                </Steps>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
@@ -88,6 +150,31 @@ class Index extends Component {
                     {
                         this.props.key0.step == 1 ?
                             <div>
+                                {
+                                    this.props.key0.task?
+                                    <div>
+                                        {
+                                            this.props.key0.task.task_type === 'QUESTION' ?
+                                                this.props.key0.task.question_list.map((question, index) => {
+                                                    if (question.question_type === 'RADIO') {
+                                                        return '单选题';
+                                                    } else if (question.question_type === 'check') {
+                                                        return '复选题';
+                                                    } else if (question.question_type === 'GAP_FILLING') {
+                                                        return '填空题';
+                                                    }
+                                                    return null;
+                                                })
+                                                :
+                                            this.props.key0.task.task_type === 'PICTURE' ? '上传图片'
+                                                :
+                                            this.props.key0.task.task_type === 'RECORD' ? '上传录音'
+                                                : null
+                                        }
+                                    </div>
+                                    :
+                                    ''
+                                }
                             </div>
                             :
                             ''
@@ -95,6 +182,7 @@ class Index extends Component {
                     {
                         this.props.key0.step == 2 ?
                             <div>
+                                恭喜你完成任务获得激情钥匙一枚
                             </div>
                             :
                             ''
