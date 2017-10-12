@@ -17,18 +17,37 @@ class ArticleIndex extends Component {
     componentDidMount() {
         document.title = '党建';
 
-        document.body.scrollTop = 0;
+        this.handleLoadArticle();
 
-        this.props.dispatch({
-            type: 'article/fetch',
-            data: {
-                is_load: true
-            }
-        });
     }
 
     componentWillUnmount() {
 
+    }
+
+    handleLoadArticle() {
+        http.request({
+            url: '/mobile/article/all/list',
+            data: {},
+            success: function (data) {
+                this.props.dispatch({
+                    type: 'article/fetch',
+                    data: {
+                        list: data
+                    }
+                });
+            }.bind(this),
+            complete: function () {
+                document.body.scrollTop = this.props.article.scroll_top;
+
+                this.props.dispatch({
+                    type: 'article/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
     }
 
     handleArticle(article_id) {
@@ -51,7 +70,7 @@ class ArticleIndex extends Component {
                                 {
                                     this.props.article.list.map((item, index) => {
                                         return (
-                                            <img key={index} src={require('../../assets/image/banner.jpg')}
+                                            <img key={index} src={item.article_image?constant.host + item.article_image:null}
                                                  style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.48 + 'px'}}
                                                  alt=""/>
                                         );
@@ -71,11 +90,11 @@ class ArticleIndex extends Component {
                                         <Item
                                             key={item.article_id}
                                             arrow="horizontal"
-                                            thumb={<img src={require('../../assets/image/banner.jpg')} style={{width: '200px',  height: '96px'}} alt=""/>}
+                                            thumb={<img src={item.article_image?constant.host + item.article_image:null} style={{width: '200px',  height: '96px'}} alt=""/>}
                                             multipleLine
                                             onClick={this.handleArticle.bind(this, item.article_id)}
                                         >
-                                            Title <Brief>subtitle</Brief>
+                                            {item.article_name} <Brief>{item.article_summary}</Brief>
                                         </Item>
                                     );
                                 })
@@ -93,6 +112,8 @@ class ArticleIndex extends Component {
                         :
                         ''
                 }
+                <WhiteSpace size="lg"/>
+                <div style={{height: '100px'}}></div>
                 {
                     this.props.article.is_load ?
                         ''

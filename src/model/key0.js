@@ -11,6 +11,7 @@ export default {
         task_id: '',
 		task: null,
         member_task: null,
+		file: null,
         secene_id: '',
         action: '',
 		scroll_top: 0

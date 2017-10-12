@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, List} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, List, Toast} from 'antd-mobile';
 
 import constant from '../util/constant';
 import http from '../util/http';
@@ -52,10 +52,15 @@ class Index extends Component {
 
 
     handleKey(key_id) {
-        this.props.dispatch(routerRedux.push({
-            pathname: '/key/' + key_id,
-            query: {},
-        }));
+        if (key_id === 'f9892bc1d79c46e2a06042a935ac02fb') {
+            this.props.dispatch(routerRedux.push({
+                pathname: '/key/' + key_id,
+                query: {},
+            }));
+        } else {
+            Toast.info('功能完善中......', 1);
+        }
+
     }
 
     render() {
@@ -97,6 +102,7 @@ class Index extends Component {
                         ''
                 }
                 <WhiteSpace size="lg"/>
+                <div style={{height: '100px'}}></div>
                 {
                     this.props.index.is_load ?
                         ''

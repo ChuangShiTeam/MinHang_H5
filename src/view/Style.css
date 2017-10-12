@@ -57,3 +57,44 @@ body, html {
     font-size: 28px;
     text-align: center;
 }
+.center-logo {
+    position: fixed;
+    height: 500px;
+    bottom: 400px;
+    left: 0px;
+    text-align: center;
+}
+.center {
+    position: fixed;
+    height: 100px;
+    left: 0px;
+    bottom: 400px;
+    width: 100%;
+    border-top: 1PX solid #ddd;
+}
+.center-buttom {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    line-height: 100px;
+    text-align: center;
+    background-color: #c81623;
+}
+
+.footer {
+    position: fixed;
+    height: 100px;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    border-top: 1PX solid #ddd;
+}
+
+.footer-buttom {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    line-height: 100px;
+    text-align: center;
+    background-color: #c81623;
+}
