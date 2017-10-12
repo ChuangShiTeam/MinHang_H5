@@ -145,6 +145,91 @@ class Index extends Component {
         });
     }
 
+    handleUploadRecord() {
+        let that = this;
+        window.wx.startRecord();
+        window.wx.stopRecord({
+            success: function (res) {
+                var localId = res.localId;
+                window.wx.uploadVoice({
+                    localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
+                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                    success: function (res) {
+                        var serverId = res.serverId; // 返回音频的服务器端ID
+                        that.handleDownLoadWecatVoice(serverId);
+                    }
+                });
+            }
+        });
+    }
+
+    handleDownLoadWecatVoice(media_id) {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_load: false
+            }
+        });
+        http.request({
+            url: '/wechat/download/voice',
+            data: {
+                media_id: media_id
+            },
+            success: function (data) {
+                if (data.file_id) {
+                    this.handleSubmitRecordTask(data.file_id);
+                }
+            }.bind(this),
+            complete: function () {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
+    }
+
+    handleSubmitRecordTask(file_id) {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_load: false
+            }
+        });
+        http.request({
+            url: '/mobile/minhang/task/member/complete',
+            data: {
+                task_id: this.props.key0.task_id,
+                member_record: {
+                    record_file: file_id
+                }
+            },
+            success: function (data) {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        step: 2
+                    }
+                });
+                notification.emit('sendMessage', {
+                    targetId: '0',
+                    action: 'loadPoster',
+                    content: ''
+                });
+            }.bind(this),
+            complete: function () {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
+    }
+
     handleUploadImage() {
         let that = this;
         window.wx.chooseImage({
@@ -337,7 +422,13 @@ class Index extends Component {
                                                     </div>
                                                 </div>
                                                 :
-                                            this.props.key0.task.task_type === 'RECORD' ? '上传录音'
+                                            this.props.key0.task.task_type === 'RECORD' ?
+                                                <div>
+                                                    <div style={{height: '200px'}}></div>
+                                                    <div className="center">
+                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>{this.props.key0.task.task_name}</Button>
+                                                    </div>
+                                                </div>
                                                 : null
                                         }
                                     </div>
