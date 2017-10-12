@@ -234,15 +234,6 @@ class Index extends Component {
         });
     }
 
-    handleSendMessage() {
-        notification.emit('sendMessage', {
-            targetId: '0',
-            action: 'loadPoster',
-            content: ''
-        });
-    }
-
-
     render() {
         const Item = List.Item;
         const Step = Steps.Step;
@@ -252,7 +243,6 @@ class Index extends Component {
         return (
             <div>
                 <WhiteSpace size="lg"/>
-                <Button className="btn" type="primary" onClick={this.handleSendMessage.bind(this)}>发送消息</Button>
                 <WingBlank mode={20}>
                 {
                     this.props.key0.step != 2?
