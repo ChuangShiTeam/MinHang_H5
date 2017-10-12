@@ -15,34 +15,31 @@ import key0 from './model/key0';
 import constant from './util/constant';
 import notification from './util/notification';
 import wechat from './util/wechat';
+import storage from './util/storage';
 
-let result = true;
-
-if (document.location.href.indexOf('/story/') > -1 || document.location.href.indexOf('/science/') > -1) {
-
-} else {
-    result = wechat.auth();
-}
+let result = wechat.auth();
 
 if (result) {
     window.socket = io(constant.socket);
 
     window.socket.on('connect', function () {
         window.socket.emit('login', {
-            id: 8
+            id: storage.getToken()
         }, function (response) {
             if (response.code === 200) {
                 window.socket.on('receiveMessage', function (data) {
-                    notification.emit('event', {});
+                    notification.emit('receiveMessage', {});
+                });
+                notification.on('sendMessage', this, function (data) {
+                    window.socket.emit('sendMessage', {
+                        targetId: data.targetId,
+                        action: data.action,
+                        content: data.content
+                    }, function (response) {
+
+                    });
                 });
 
-                window.socket.emit('sendMessage', {
-                    targetId: 0,
-                    action: 'event',
-                    content: '123456'
-                }, function (response) {
-
-                });
             }
         });
     });

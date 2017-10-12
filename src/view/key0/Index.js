@@ -6,6 +6,7 @@ import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List,
 
 import constant from '../../util/constant';
 import http from '../../util/http';
+import notification from '../../util/notification';
 
 class Index extends Component {
     constructor(props) {
@@ -216,6 +217,11 @@ class Index extends Component {
                         step: 2
                     }
                 });
+                notification.emit('sendMessage', {
+                    targetId: '0',
+                    action: 'loadPoster',
+                    content: ''
+                });
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
@@ -225,6 +231,14 @@ class Index extends Component {
                     }
                 });
             }.bind(this)
+        });
+    }
+
+    handleSendMessage() {
+        notification.emit('sendMessage', {
+            targetId: '0',
+            action: 'loadPoster',
+            content: ''
         });
     }
 
@@ -238,6 +252,7 @@ class Index extends Component {
         return (
             <div>
                 <WhiteSpace size="lg"/>
+                <Button className="btn" type="primary" onClick={this.handleSendMessage.bind(this)}>发送消息</Button>
                 <WingBlank mode={20}>
                 {
                     this.props.key0.step != 2?
