@@ -6,7 +6,7 @@ export default {
     host: 'http://api.chuangshi.nowui.com',
     is_test: false,
     platform: 'H5',
-    version: '1.0.0',
+    version: '1.0.1',
     name: '闵行党建',
     h5Host: 'http://h5.minhang.nowui.com/?#/',
     app_id: '8acc2d49ad014f418878d1a16336c16b',
