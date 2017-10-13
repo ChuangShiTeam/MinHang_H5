@@ -171,7 +171,7 @@ class Index extends Component {
             }
         });
         http.request({
-            url: '/wechat/download/voice',
+            url: '/wechat/download/media',
             data: {
                 media_id: media_id
             },
@@ -260,7 +260,7 @@ class Index extends Component {
             }
         });
         http.request({
-            url: '/wechat/download/image',
+            url: '/wechat/download/media',
             data: {
                 media_id: media_id
             },

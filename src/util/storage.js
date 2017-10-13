@@ -22,7 +22,7 @@ function getToken() {
     let token = localStorage.getItem(token_key);
 
     if (constant.is_test) {
-        token = 'O7PGCdUoZYAm62TrVkP2xlBId5G44Oeb8ZjYH9J/t+fe4lCkP8E3cEfHOhKW6sxTklIFWJyfVktPh0c+++f0FYMeXy+vVx2yDSLpuUZ+mKQ=';
+        token = 'vDKovz1y0kJMSVR/jsgeIH3dNqaPmadLmjggO4hy2c2zhtoO8jKy7WNz0iWFKEI8klIFWJyfVktPh0c+++f0FfV2mbFXxkjJpEW3pkaqky4=';
     }
 
     if (token == null) {
