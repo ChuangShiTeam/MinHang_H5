@@ -13,6 +13,7 @@ export default {
 		task: null,
         member_task: null,
 		file: null,
+		is_record: false,
         secene_id: '',
         action: '',
 		scroll_top: 0

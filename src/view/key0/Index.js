@@ -83,13 +83,13 @@ class Index extends Component {
                             action: result.action
                         }
                     });
-                    that.handleLoadTask();
+                    that.handleLoadTask(result.task_id);
                 }
             }
         });
     }
 
-    handleLoadTask() {
+    handleLoadTask(task_id) {
         this.props.dispatch({
             type: 'key0/fetch',
             data: {
@@ -99,7 +99,7 @@ class Index extends Component {
         http.request({
             url: '/mobile/minhang/task/find',
             data: {
-                task_id: this.props.key0.task_id
+                task_id: task_id
             },
             success: function (data) {
                 let step = 1;
@@ -147,8 +147,37 @@ class Index extends Component {
     }
 
     handleUploadRecord() {
-        let that = this;
         window.wx.startRecord();
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_record: true
+            }
+        });
+        let that = this;
+        window.wx.onVoiceRecordEnd({
+            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+            complete: function (res) {
+                var localId = res.localId;
+                window.wx.uploadVoice({
+                    localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
+                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                    success: function (res) {
+                        var serverId = res.serverId; // 返回音频的服务器端ID
+                        that.handleDownLoadWecatVoice(serverId);
+                    }
+                });
+                that.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_record: false
+                    }
+                });
+            }
+        });
+    }
+    handleStopRecord() {
+        let that = this;
         window.wx.stopRecord({
             success: function (res) {
                 var localId = res.localId;
@@ -158,6 +187,12 @@ class Index extends Component {
                     success: function (res) {
                         var serverId = res.serverId; // 返回音频的服务器端ID
                         that.handleDownLoadWecatVoice(serverId);
+                    }
+                });
+                that.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_record: false
                     }
                 });
             }
@@ -409,7 +444,7 @@ class Index extends Component {
                                                                 </List>
                                                                 <WhiteSpace size="lg"/>
                                                                 <WhiteSpace size="lg"/>
-                                                                <Button className="btn" type="primary" onClick={this.handleSubmitQuestion.bind(this)}>提交</Button>
+                                                                <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
                                                             </div>
                                                         );
                                                     }
@@ -439,7 +474,29 @@ class Index extends Component {
                                                 :
                                             this.props.key0.task.task_type === 'RECORD' ?
                                                 <div>
-                                                    <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>{this.props.key0.task.task_name}</Button>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WingBlank size="md">
+                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>开始录音</Button>
+                                                        <WhiteSpace size="xl"/>
+                                                        <div className="upload-image">
+                                                            <div className="upload-image-tip">
+                                                                一分钟自动完成录音并上传
+                                                            </div>
+                                                        </div>
+                                                        <WhiteSpace size="xl"/>
+                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleStopRecord.bind(this)}>完成录音(上传录音)</Button>
+                                                        <WhiteSpace size="xl"/>
+                                                        <div className="upload-image">
+                                                            <div className="upload-image-tip">
+                                                                {this.props.key0.task.task_name}
+                                                            </div>
+                                                        </div>
+                                                    </WingBlank>
                                                 </div>
                                                 : null
                                         }
