@@ -7,6 +7,7 @@ export default {
 		is_load: false,
 		key: {},
 		member_key: {},
+        selectedIndex: 0,
         step: 0,
         task_id: '',
 		task: null,

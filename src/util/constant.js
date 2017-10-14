@@ -3,7 +3,7 @@ export default {
     socket: 'http://api.chuangshi.nowui.com:2998',
     // host: 'http://localhost:8080',
     // is_test: true,
-    host: 'http://api.chuangshi.nowui.com',
+    //host: 'http://api.chuangshi.nowui.com',
     is_test: false,
     platform: 'H5',
     version: '1.0.1',

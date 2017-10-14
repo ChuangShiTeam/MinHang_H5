@@ -11,6 +11,10 @@ import index from './model/index';
 import article from './model/article';
 import my from './model/my';
 import key0 from './model/key0';
+import key2 from './model/key2';
+import key3 from './model/key3';
+import key4 from './model/key4';
+import key5 from './model/key5';
 
 import constant from './util/constant';
 import notification from './util/notification';
@@ -54,6 +58,10 @@ if (result) {
     app.model(article);
     app.model(my);
     app.model(key0);
+    app.model(key2);
+    app.model(key3);
+    app.model(key4);
+    app.model(key5);
 
     app.router(Router);
 

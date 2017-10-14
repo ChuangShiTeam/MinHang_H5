@@ -32,7 +32,7 @@ class Index extends Component {
         http.request({
             url: '/mobile/minhang/key/find',
             data: {
-                key_id: this.props.key0.key_id
+                key_id: this.props.key3.key_id
             },
             success: function (data) {
                 let step = 0;
@@ -40,7 +40,7 @@ class Index extends Component {
                     step = 2;
                 }
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         key: data.key,
                         member_key: data.member_key,
@@ -49,10 +49,10 @@ class Index extends Component {
                 });
             }.bind(this),
             complete: function () {
-                document.body.scrollTop = this.props.key0.scroll_top;
+                document.body.scrollTop = this.props.key3.scroll_top;
 
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -76,7 +76,7 @@ class Index extends Component {
 
                 if (result && result.task_id) {
                     that.props.dispatch({
-                        type: 'key0/fetch',
+                        type: 'key3/fetch',
                         data: {
                             task_id: result.task_id,
                             secene_id: result.secene_id,
@@ -91,7 +91,7 @@ class Index extends Component {
 
     handleLoadTask() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -99,7 +99,7 @@ class Index extends Component {
         http.request({
             url: '/mobile/minhang/task/find',
             data: {
-                task_id: this.props.key0.task_id
+                task_id: this.props.key3.task_id
             },
             success: function (data) {
                 let step = 1;
@@ -107,7 +107,7 @@ class Index extends Component {
                     step = 2
                 }
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         task: data.task,
                         member_task: data.member_task?data.member_task:null,
@@ -117,7 +117,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -129,9 +129,8 @@ class Index extends Component {
     handleSubmitQuestionTask() {
         this.props.form.validateFields((errors, values) => {
             if (!errors) {
-                let task = this.props.key0.task;
+                let task = this.props.key3.task;
                 values.task_id = task.task_id;
-                values.key_activated_step = this.props.key0.selectedIndex;
                 http.request({
                     url: '/mobile/minhang/task/member/complete',
                     data: values,
@@ -166,7 +165,7 @@ class Index extends Component {
 
     handleDownLoadWecatVoice(media_id) {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -183,7 +182,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -194,7 +193,7 @@ class Index extends Component {
 
     handleSubmitRecordTask(file_id) {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -202,15 +201,14 @@ class Index extends Component {
         http.request({
             url: '/mobile/minhang/task/member/complete',
             data: {
-                task_id: this.props.key0.task_id,
-                key_activated_step: this.props.key0.selectedIndex,
+                task_id: this.props.key3.task_id,
                 member_record: {
                     record_file: file_id
                 }
             },
             success: function (data) {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         step: 2
                     }
@@ -223,7 +221,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -256,7 +254,7 @@ class Index extends Component {
 
     handleDownLoadWecatImage(media_id) {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -273,7 +271,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -284,7 +282,7 @@ class Index extends Component {
 
     handleSubmitImageTask(file_id) {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -292,15 +290,14 @@ class Index extends Component {
         http.request({
             url: '/mobile/minhang/task/member/complete',
             data: {
-                task_id: this.props.key0.task_id,
-                key_activated_step: this.props.key0.selectedIndex,
+                task_id: this.props.key3.task_id,
                 member_picture: {
                     picture_file: file_id
                 }
             },
             success: function (data) {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         step: 2
                     }
@@ -313,7 +310,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -333,12 +330,12 @@ class Index extends Component {
                 <WhiteSpace size="lg"/>
                 <WingBlank mode={20}>
                 {
-                    this.props.key0.step != 2?
+                    this.props.key3.step != 2?
                         <div>
-                        <SegmentedControl selectedIndex={this.props.key0.selectedIndex} values={['上传微笑照片']}/>
+                        <SegmentedControl selectedIndex={0} values={['上传微笑照片']}/>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                            <Steps current={this.props.key0.step} direction="horizontal">
+                            <Steps current={this.props.key3.step} direction="horizontal">
                                 <Step title="第一步" description="" />
                                 <Step title="第二步" description="" />
                                 <Step title="第三步" description="" />
@@ -349,7 +346,7 @@ class Index extends Component {
                 }
 
                     {
-                        this.props.key0.step == 0 ?
+                        this.props.key3.step == 0 ?
                             <div>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
@@ -366,14 +363,14 @@ class Index extends Component {
                             ''
                     }
                     {
-                        this.props.key0.step == 1 ?
+                        this.props.key3.step == 1 ?
                             <div>
                                 {
-                                    this.props.key0.task?
+                                    this.props.key3.task?
                                     <div>
                                         {
-                                            this.props.key0.task.task_type === 'QUESTION' ?
-                                                this.props.key0.task.question_list.map((question, index) => {
+                                            this.props.key3.task.task_type === 'QUESTION' ?
+                                                this.props.key3.task.question_list.map((question, index) => {
                                                     if (question.question_type === 'RADIO') {
                                                         return (
                                                             <div>
@@ -417,19 +414,19 @@ class Index extends Component {
                                                     return null;
                                                 })
                                                 :
-                                            this.props.key0.task.task_type === 'PICTURE' ?
+                                            this.props.key3.task.task_type === 'PICTURE' ?
                                                 <div>
                                                     <div style={{height: '200px'}}></div>
                                                     <div className="center">
-                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadImage.bind(this)}>{this.props.key0.task.task_name}</Button>
+                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadImage.bind(this)}>{this.props.key3.task.task_name}</Button>
                                                     </div>
                                                 </div>
                                                 :
-                                            this.props.key0.task.task_type === 'RECORD' ?
+                                            this.props.key3.task.task_type === 'RECORD' ?
                                                 <div>
                                                     <div style={{height: '200px'}}></div>
                                                     <div className="center">
-                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>{this.props.key0.task.task_name}</Button>
+                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>{this.props.key3.task.task_name}</Button>
                                                     </div>
                                                 </div>
                                                 : null
@@ -443,11 +440,11 @@ class Index extends Component {
                             ''
                     }
                     {
-                        this.props.key0.step == 2 ?
+                        this.props.key3.step == 2 ?
                             <div>
                                 <div style={{height: '200px'}}></div>
                                 <div className="center-logo">
-                                    <img src={require('../../assets/image/key0.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth + 'px'}} alt=""/>
+                                    <img src={require('../../assets/image/key3.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth + 'px'}} alt=""/>
                                     <WhiteSpace size="lg" />
                                     恭喜你完成任务获得激情钥匙一枚
                                 </div>
@@ -457,7 +454,7 @@ class Index extends Component {
                     }
                 </WingBlank>
                 {
-                    this.props.key0.is_load && this.props.key0.length === 0 ?
+                    this.props.key3.is_load && this.props.key3.length === 0 ?
                         <div>
                             <img src={require('../../assets/svg/empty.svg')} className="empty-image" alt=""/>
                             <div className="empty-text">没有数据</div>
@@ -466,10 +463,10 @@ class Index extends Component {
                         ''
                 }
                 {
-                    this.props.key0.is_load ?
+                    this.props.key3.is_load ?
                         ''
                         :
-                        <div className={'loading-mask ' + (this.props.key0.is_load ? 'loading-mask-hide' : '')}>
+                        <div className={'loading-mask ' + (this.props.key3.is_load ? 'loading-mask-hide' : '')}>
                             <div className="loading"><ActivityIndicator/></div>
                         </div>
                 }
@@ -478,4 +475,4 @@ class Index extends Component {
     }
 }
 Index = createForm()(Index);
-export default connect(({key0}) => ({key0}))(Index);
+export default connect(({key3}) => ({key3}))(Index);

@@ -52,14 +52,10 @@ class Index extends Component {
 
 
     handleKey(key_id) {
-        if (key_id === 'f9892bc1d79c46e2a06042a935ac02fb') {
-            this.props.dispatch(routerRedux.push({
-                pathname: '/key/' + key_id,
-                query: {},
-            }));
-        } else {
-            Toast.info('功能完善中......', 1);
-        }
+        this.props.dispatch(routerRedux.push({
+            pathname: '/key/' + key_id,
+            query: {},
+        }));
 
     }
 
