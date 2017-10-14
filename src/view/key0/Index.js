@@ -332,22 +332,21 @@ class Index extends Component {
             <div>
                 <WhiteSpace size="lg"/>
                 <WingBlank mode={20}>
-                {
-                    this.props.key0.step != 2?
-                        <div>
-                        <SegmentedControl selectedIndex={this.props.key0.selectedIndex} values={['上传微笑照片']}/>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                            <Steps current={this.props.key0.step} direction="horizontal">
-                                <Step title="第一步" description="" />
-                                <Step title="第二步" description="" />
-                                <Step title="第三步" description="" />
-                            </Steps>
-                        </div>
-                        :null
+                    {
+                        this.props.key0.step != 2?
+                            <div>
+                            <SegmentedControl selectedIndex={this.props.key0.selectedIndex} values={['上传微笑照片']}/>
+                            <WhiteSpace size="lg"/>
+                            <WhiteSpace size="lg"/>
+                                <Steps current={this.props.key0.step} direction="horizontal">
+                                    <Step title="第一步" description="" />
+                                    <Step title="第二步" description="" />
+                                    <Step title="第三步" description="" />
+                                </Steps>
+                            </div>
+                            :null
 
-                }
-
+                    }
                     {
                         this.props.key0.step == 0 ?
                             <div>
@@ -419,18 +418,28 @@ class Index extends Component {
                                                 :
                                             this.props.key0.task.task_type === 'PICTURE' ?
                                                 <div>
-                                                    <div style={{height: '200px'}}></div>
-                                                    <div className="center">
-                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadImage.bind(this)}>{this.props.key0.task.task_name}</Button>
-                                                    </div>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WhiteSpace size="xl"/>
+                                                    <WingBlank size="md">
+                                                        <div className="upload-image" onClick={this.handleUploadImage.bind(this)}>
+                                                            <img src={require('../../assets/image/upload-image.png')} alt=""/>
+                                                            <WhiteSpace size="xl"/>
+                                                            <div className="upload-image-tip">
+                                                                {this.props.key0.task.task_name}
+                                                            </div>
+                                                        </div>
+                                                    </WingBlank>
                                                 </div>
                                                 :
                                             this.props.key0.task.task_type === 'RECORD' ?
                                                 <div>
-                                                    <div style={{height: '200px'}}></div>
-                                                    <div className="center">
-                                                        <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>{this.props.key0.task.task_name}</Button>
-                                                    </div>
+                                                    <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>{this.props.key0.task.task_name}</Button>
                                                 </div>
                                                 : null
                                         }
@@ -445,12 +454,23 @@ class Index extends Component {
                     {
                         this.props.key0.step == 2 ?
                             <div>
-                                <div style={{height: '200px'}}></div>
-                                <div className="center-logo">
-                                    <img src={require('../../assets/image/key0.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth + 'px'}} alt=""/>
-                                    <WhiteSpace size="lg" />
-                                    恭喜你完成任务获得激情钥匙一枚
-                                </div>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WingBlank size="md">
+                                    <div className="upload-image">
+                                        <img src={require('../../assets/image/key0.png')} alt=""/>
+                                        <WhiteSpace size="xl"/>
+                                        <div className="upload-image-tip">
+                                            恭喜你完成任务获得激情钥匙一枚
+                                        </div>
+                                    </div>
+                                </WingBlank>
                             </div>
                             :
                             ''

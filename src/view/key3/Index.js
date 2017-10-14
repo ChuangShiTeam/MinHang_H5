@@ -442,12 +442,23 @@ class Index extends Component {
                     {
                         this.props.key3.step == 2 ?
                             <div>
-                                <div style={{height: '200px'}}></div>
-                                <div className="center-logo">
-                                    <img src={require('../../assets/image/key3.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth + 'px'}} alt=""/>
-                                    <WhiteSpace size="lg" />
-                                    恭喜你完成任务获得激情钥匙一枚
-                                </div>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WhiteSpace size="xl"/>
+                                <WingBlank size="md">
+                                    <div className="upload-image">
+                                        <img src={require('../../assets/image/key3.png')} alt=""/>
+                                        <WhiteSpace size="xl"/>
+                                        <div className="upload-image-tip">
+                                            恭喜你完成任务获得信息钥匙一枚
+                                        </div>
+                                    </div>
+                                </WingBlank>
                             </div>
                             :
                             ''

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {createForm} from "rc-form";
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, step1s, List, Button, InputItem, TextareaItem, Radio} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio} from 'antd-mobile';
 
 import constant from '../../util/constant';
 import http from '../../util/http';
@@ -349,7 +349,7 @@ class Index extends Component {
 
     render() {
         const Item = List.Item;
-        const step1 = step1s.step1;
+        const Step = Steps.Step;
         const {getFieldProps, getFieldError} = this.props.form;
         const RadioItem = Radio.RadioItem;
 
@@ -363,32 +363,43 @@ class Index extends Component {
                 {
                     this.props.key2.key_is_activated ?
                         <div>
-                            <div style={{height: '200px'}}></div>
-                            <div className="center-logo">
-                                <img src={require('../../assets/image/key2.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth + 'px'}} alt=""/>
-                                <WhiteSpace size="lg" />
-                                恭喜你完成任务获得信念钥匙一枚
-                            </div>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WhiteSpace size="xl"/>
+                            <WingBlank size="md">
+                                <div className="upload-image">
+                                    <img src={require('../../assets/image/key2.png')} alt=""/>
+                                    <WhiteSpace size="xl"/>
+                                    <div className="upload-image-tip">
+                                        恭喜你完成任务获得信念钥匙一枚
+                                    </div>
+                                </div>
+                            </WingBlank>
                         </div>
                         :
                         <div>
                             {
                                 this.props.key2.selectedIndex == 0?
                                     <div>
-                                        <step1s current={this.props.key2.step1} direction="horizontal">
-                                            <step1 title="第一步" description="" />
-                                            <step1 title="第二步" description="" />
-                                            <step1 title="第三步" description="" />
-                                        </step1s>
+                                        <Steps current={this.props.key2.step1} direction="horizontal">
+                                            <Step title="第一步" description="" />
+                                            <Step title="第二步" description="" />
+                                            <Step title="第三步" description="" />
+                                        </Steps>
                                     </div>
                                     :
                                 this.props.key2.selectedIndex == 1?
                                     <div>
-                                        <step1s current={this.props.key2.step2} direction="horizontal">
-                                            <step1 title="第一步" description="" />
-                                            <step1 title="第二步" description="" />
-                                            <step1 title="第三步" description="" />
-                                        </step1s>
+                                        <Steps current={this.props.key2.step2} direction="horizontal">
+                                            <Step title="第一步" description="" />
+                                            <Step title="第二步" description="" />
+                                            <Step title="第三步" description="" />
+                                        </Steps>
                                     </div>
                                     :
                                 null

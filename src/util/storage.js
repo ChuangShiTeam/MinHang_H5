@@ -5,11 +5,7 @@ const token_key = 'token_' + constant.version;
 
 function getOpenId() {
     if (constant.is_test) {
-        if (constant.app_id === 'c1af3f1ae00e4e0da9b20f5bd41b4279') {
-            return 'oqvzXv4c-FY2-cGh9U-RA4JIrZoc';
-        } else {
-            return 'oXxTjwoBVyBquUAAx3RaFow62zjA';
-        }
+        return 'o1CDrwvip3W_WjC9hmXfmQoAa12A';
     }
     return localStorage.getItem(open_id_key);
 }
@@ -22,7 +18,7 @@ function getToken() {
     let token = localStorage.getItem(token_key);
 
     if (constant.is_test) {
-        
+        token = 'LfgjlSw5wOycQwpcVDMjOoYz//yozWUBAORcSu0fMPnOQOfnLAaY2XRto8tiHoAbklIFWJyfVktPh0c+++f0FWbidmg+zZNF6qO9GW/euTg=';
     }
 
     if (token == null) {
