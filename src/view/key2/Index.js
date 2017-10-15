@@ -12,7 +12,8 @@ import {
     Button,
     Radio,
     Result,
-    Icon
+    Icon,
+    Toast
 } from 'antd-mobile';
 import Record from '../Record';
 
@@ -126,22 +127,38 @@ class Index extends Component {
                 try {
                     result = JSON.parse(response.resultStr);
                 } catch (e) {
-                    //TODO 提示扫描错误二维码
-                    result = JSON.parse('{\"action\":\"\",\"task_id\":\"50d8f64595e945c8bff694f7bdeb702a\",\"screen_id\":\"0\"}');
+                    Toast.fail('请扫描正确二维码', 2);
                 }
 
                 if (result && result.task_id) {
-                    that.props.dispatch({
-                        type: 'key2/fetch',
+                    http.request({
+                        url: '/mobile/minhang/task/check',
                         data: {
                             task_id: result.task_id,
-                            secene_id: result.secene_id,
-                            action: result.action
+                            action: that.props.key2.selectedIndex === 0?'loadPartyHistory':that.props.key2.selectedIndex === 1?'loadPartySong':'loadHandlePrint'
+                        },
+                        success: function (data) {
+                            if (data) {
+                                Toast.fail(data, 2);
+                            } else {
+                                that.props.dispatch({
+                                    type: 'key2/fetch',
+                                    data: {
+                                        task_id: result.task_id,
+                                        secene_id: result.secene_id,
+                                        action: result.action
+                                    }
+                                });
+                                that.handleLoadTask(result.task_id);
+                            }
+                        },
+                        complete: function () {
+
                         }
                     });
-                    that.handleLoadTask(result.task_id);
+
                 } else {
-                    //TODO 提示扫描错误二维码
+                    Toast.fail('请扫描正确二维码', 2);
                 }
             }
         });
@@ -360,22 +377,31 @@ class Index extends Component {
         let step1 = this.props.key2.step1;
         let step2 = this.props.key2.step2;
         let step3 = this.props.key2.step3;
-        if (this.props.key2.selectedIndex === 0) {
+        let selectedIndex = this.props.key2.selectedIndex;
+        if (selectedIndex === 0) {
             step1 = 2;
+            selectedIndex = (step2 === 2?2:1);
             notification.emit('sendMessage', {
                 targetId: '2',
                 action: 'loadPartyHistory',
                 content: ''
             });
-        } else if (this.props.key2.selectedIndex === 1) {
+        } else if (selectedIndex === 1) {
             step2 = 2;
+            selectedIndex = (step3 === 2?0:2);
             notification.emit('sendMessage', {
                 targetId: '2',
                 action: 'loadPartySong',
                 content: ''
             });
-        } else if (this.props.key2.selectedIndex === 2) {
+        } else if (selectedIndex === 2) {
             step3 = 2;
+            selectedIndex = (step1 === 2?1:0);
+            notification.emit('sendMessage', {
+                targetId: '3',
+                action: 'loadHandlePrint',
+                content: ''
+            });
         }
         let member_key = this.props.key2.member_key;
         let key_is_activated = false;
@@ -390,6 +416,7 @@ class Index extends Component {
                 step1: step1,
                 step2: step2,
                 step3: step3,
+                selectedIndex: selectedIndex,
                 member_key: member_key,
                 key_is_activated: key_is_activated
             }

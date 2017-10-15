@@ -16,7 +16,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        document.title = "寻匙之旅，解锁党建";
+        document.title = "寻钥之旅，解锁党建";
 
         this.handleLoadKey();
     }

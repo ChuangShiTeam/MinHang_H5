@@ -10,7 +10,8 @@ import {
     Steps,
     List,
     Button,
-    Radio
+    Radio,
+    Toast
 } from 'antd-mobile';
 import Picture from '../Picture';
 
@@ -98,19 +99,36 @@ class Index extends Component {
                 try {
                     result = JSON.parse(response.resultStr);
                 } catch (e) {
-                    result = JSON.parse('{\"action\":\"\",\"task_id\":\"50d8f64595e945c8bff694f7bdeb702a\",\"screen_id\":\"0\"}');
+                    Toast.fail('请扫描正确二维码', 2);
                 }
-
                 if (result && result.task_id) {
-                    that.props.dispatch({
-                        type: 'key0/fetch',
+                    http.request({
+                        url: '/mobile/minhang/task/check',
                         data: {
                             task_id: result.task_id,
-                            secene_id: result.secene_id,
-                            action: result.action
+                            action: 'loadPoster'
+                        },
+                        success: function (data) {
+                            if (data) {
+                                Toast.fail(data, 2);
+                            } else {
+                                that.props.dispatch({
+                                    type: 'key0/fetch',
+                                    data: {
+                                        task_id: result.task_id,
+                                        secene_id: result.secene_id,
+                                        action: result.action
+                                    }
+                                });
+                                that.handleLoadTask(result.task_id);
+                            }
+                        },
+                        complete: function () {
+
                         }
                     });
-                    that.handleLoadTask(result.task_id);
+                } else {
+                    Toast.fail('请扫描正确二维码', 2);
                 }
             }
         });

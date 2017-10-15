@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {createForm} from "rc-form";
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio, Result, Icon} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio, Result, Icon, Toast} from 'antd-mobile';
 
 import constant from '../../util/constant';
-import http from '../../util/http';
+import http from '../../util/http'
+import notification from '../../util/notification';
 
 class Index extends Component {
     constructor(props) {
@@ -86,22 +87,38 @@ class Index extends Component {
                 try {
                     result = JSON.parse(response.resultStr);
                 } catch (e) {
-                    //TODO 提示扫描错误二维码
-                    result = JSON.parse('{\"action\":\"\",\"task_id\":\"50d8f64595e945c8bff694f7bdeb702a\",\"screen_id\":\"0\"}');
+                    Toast.fail('请扫描正确二维码', 2);
                 }
 
                 if (result && result.task_id) {
-                    that.props.dispatch({
-                        type: 'key4/fetch',
+                    http.request({
+                        url: '/mobile/minhang/task/check',
                         data: {
                             task_id: result.task_id,
-                            secene_id: result.secene_id,
-                            action: result.action
+                            action: 'loadTimelineEvent'
+                        },
+                        success: function (data) {
+                            if (data) {
+                                Toast.fail(data, 2);
+                            } else {
+                                that.props.dispatch({
+                                    type: 'key4/fetch',
+                                    data: {
+                                        task_id: result.task_id,
+                                        secene_id: result.secene_id,
+                                        action: result.action
+                                    }
+                                });
+                                that.handleLoadTask(result.task_id);
+                            }
+                        },
+                        complete: function () {
+
                         }
                     });
-                    that.handleLoadTask(result.task_id);
+
                 } else {
-                    //TODO 提示扫描错误二维码
+                    Toast.fail('请扫描正确二维码', 2);
                 }
             }
         });
@@ -369,10 +386,13 @@ class Index extends Component {
     handelSubmitResponse() {
         let step1 = this.props.key4.step1;
         let step2 = this.props.key4.step2;
-        if (this.props.key4.selectedIndex === 0) {
+        let selectedIndex = this.props.key4.selectedIndex;
+        if (selectedIndex === 0) {
             step1 = 2;
-        } else if (this.props.key4.selectedIndex === 1) {
+            selectedIndex = 1;
+        } else if (selectedIndex === 1) {
             step2 = 2;
+            selectedIndex = 0;
         }
         let member_key = this.props.key4.member_key;
         let key_is_activated = false;
@@ -381,11 +401,17 @@ class Index extends Component {
             member_key.key_is_activated = true;
             key_is_activated = true;
         }
+        notification.emit('sendMessage', {
+            targetId: '4',
+            action: 'loadTimelineEvent',
+            content: ''
+        });
         this.props.dispatch({
             type: 'key4/fetch',
             data: {
                 step1: step1,
                 step2: step2,
+                selectedIndex: selectedIndex,
                 member_key: member_key,
                 key_is_activated: key_is_activated
             }
