@@ -17,7 +17,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        document.title = "信息之匙";
+        document.title = "信息之钥";
 
         this.handleLoadKey();
 
@@ -445,16 +445,16 @@ class Index extends Component {
                             </div>
                             :
                             <div>
-                                <SegmentedControl selectedIndex={this.props.key3.selectedIndex} values={['标注位置', '答题']} onChange={this.handleSegmentedControl.bind(this)}/>
+                                <SegmentedControl style={{height: '0.8rem'}} selectedIndex={this.props.key3.selectedIndex} values={['标注位置', '答题']} onChange={this.handleSegmentedControl.bind(this)}/>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
                                 {
                                     this.props.key3.selectedIndex === 0?
                                         <div>
                                             <Steps current={this.props.key3.step1} direction="horizontal">
-                                                <Step title="第一步" description="" />
-                                                <Step title="第二步" description="" />
-                                                <Step title="第三步" description="" />
+                                                <Step title="识别二维码" description=""/>
+                                                <Step title="标注位置" description=""/>
+                                                <Step title="完成任务" description=""/>
                                             </Steps>
                                             {
                                                 this.props.key3.step1 === 0 ?
@@ -614,9 +614,9 @@ class Index extends Component {
                                                         <WhiteSpace size="xl"/>
                                                         <WhiteSpace size="xl"/>
                                                         <Result
-                                                            img={<Icon type="check-circle" className="icon" style={{ fill: '#1F90E6' }} />}
-                                                            title="验证成功"
-                                                            message={`任务完成度(${this.props.key3.member_key.task_complete_quantity?this.props.key3.member_key.task_complete_quantity:0}/2)`}
+                                                            img={<Icon type="check-circle" className="icon" style={{ fill: '#d3414c' }} />}
+                                                            title="任务已完成"
+                                                            message={`当前钥匙任务完成(${this.props.key3.member_key.task_complete_quantity?this.props.key3.member_key.task_complete_quantity:0}/2)`}
                                                         />
                                                     </div>
                                                     :
@@ -627,9 +627,9 @@ class Index extends Component {
                                         this.props.key3.selectedIndex === 1?
                                             <div>
                                                 <Steps current={this.props.key3.step2} direction="horizontal">
-                                                    <Step title="第一步" description="" />
-                                                    <Step title="第二步" description="" />
-                                                    <Step title="第三步" description="" />
+                                                    <Step title="识别二维码" description=""/>
+                                                    <Step title="答题" description=""/>
+                                                    <Step title="完成任务" description=""/>
                                                 </Steps>
                                                 {
                                                     this.props.key3.step2 === 0 ?
@@ -789,9 +789,9 @@ class Index extends Component {
                                                             <WhiteSpace size="xl"/>
                                                             <WhiteSpace size="xl"/>
                                                             <Result
-                                                                img={<Icon type="check-circle" className="icon" style={{ fill: '#1F90E6' }} />}
-                                                                title="验证成功"
-                                                                message={`任务完成度(${this.props.key3.member_key.task_complete_quantity?this.props.key3.member_key.task_complete_quantity:0}/2)`}
+                                                                img={<Icon type="check-circle" className="icon" style={{ fill: '#d3414c' }} />}
+                                                                title="任务已完成"
+                                                                message={`当前钥匙任务完成(${this.props.key3.member_key.task_complete_quantity?this.props.key3.member_key.task_complete_quantity:0}/2)`}
                                                             />
                                                         </div>
                                                         :

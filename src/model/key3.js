@@ -2,7 +2,7 @@ export default {
     namespace: 'key3',
 
     state: {
-        description: '信息之匙',
+        description: '信息之钥',
         key_id: '6d1fad4843c94a6bb5131a48b9f38e37',
         is_load: false,
         key: {},

@@ -17,7 +17,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        document.title = "智慧之匙";
+        document.title = "智慧之钥";
 
         this.handleLoadKey();
 
@@ -435,16 +435,16 @@ class Index extends Component {
                             </div>
                             :
                             <div>
-                                <SegmentedControl selectedIndex={this.props.key5.selectedIndex} values={['视频答题一', '视频答题二']} onChange={this.handleSegmentedControl.bind(this)}/>
+                                <SegmentedControl style={{height: '0.8rem'}} selectedIndex={this.props.key5.selectedIndex} values={['回答视频问题一', '回答视频问题二']} onChange={this.handleSegmentedControl.bind(this)}/>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
                                 {
                                     this.props.key5.selectedIndex === 0?
                                         <div>
                                             <Steps current={this.props.key5.step1} direction="horizontal">
-                                                <Step title="第一步" description="" />
-                                                <Step title="第二步" description="" />
-                                                <Step title="第三步" description="" />
+                                                <Step title="扫二维码" description=""/>
+                                                <Step title="回答问题" description=""/>
+                                                <Step title="完成任务" description=""/>
                                             </Steps>
                                             {
                                                 this.props.key5.step1 === 0 ?
@@ -458,7 +458,7 @@ class Index extends Component {
                                                         <WhiteSpace size="lg"/>
                                                         <WhiteSpace size="lg"/>
                                                         <WhiteSpace size="lg"/>
-                                                        <Button onClick={this.handleQRCode.bind(this)}>扫二维码</Button>
+                                                        <Button onClick={this.handleQRCode.bind(this)}>扫描智慧之钥二维码</Button>
                                                     </div>
                                                     :
                                                     ''
@@ -596,9 +596,9 @@ class Index extends Component {
                                                         <WhiteSpace size="xl"/>
                                                         <WhiteSpace size="xl"/>
                                                         <Result
-                                                            img={<Icon type="check-circle" className="icon" style={{ fill: '#1F90E6' }} />}
-                                                            title="验证成功"
-                                                            message={`任务完成度(${this.props.key5.member_key.task_complete_quantity?this.props.key5.member_key.task_complete_quantity:0}/2)`}
+                                                            img={<Icon type="check-circle" className="icon" style={{ fill: '#d3414c' }} />}
+                                                            title="任务已完成"
+                                                            message={`当前钥匙任务完成(${this.props.key5.member_key.task_complete_quantity?this.props.key5.member_key.task_complete_quantity:0}/2)`}
                                                         />
                                                     </div>
                                                     :
@@ -625,7 +625,7 @@ class Index extends Component {
                                                             <WhiteSpace size="lg"/>
                                                             <WhiteSpace size="lg"/>
                                                             <WhiteSpace size="lg"/>
-                                                            <Button onClick={this.handleQRCode.bind(this)}>扫二维码</Button>
+                                                            <Button onClick={this.handleQRCode.bind(this)}>扫描智慧之钥二维码</Button>
                                                         </div>
                                                         :
                                                         ''
@@ -763,9 +763,9 @@ class Index extends Component {
                                                             <WhiteSpace size="xl"/>
                                                             <WhiteSpace size="xl"/>
                                                             <Result
-                                                                img={<Icon type="check-circle" className="icon" style={{ fill: '#1F90E6' }} />}
-                                                                title="验证成功"
-                                                                message={`任务完成度(${this.props.key5.member_key.task_complete_quantity?this.props.key5.member_key.task_complete_quantity:0}/2)`}
+                                                                img={<Icon type="check-circle" className="icon" style={{ fill: '#d3414c' }} />}
+                                                                title="任务已完成"
+                                                                message={`当前钥匙任务完成(${this.props.key5.member_key.task_complete_quantity?this.props.key5.member_key.task_complete_quantity:0}/2)`}
                                                             />
                                                         </div>
                                                         :

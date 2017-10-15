@@ -2,7 +2,7 @@ export default {
     namespace: 'key4',
 
     state: {
-        description: '力量之匙',
+        description: '力量之钥',
         key_id: 'aa7a17e47bb54a15b1e4a0e16ab66a63',
         is_load: false,
         key: {},
