@@ -23,10 +23,6 @@ class Question extends Component {
 	}
 
 	handleSubmitAnswer() {
-		notification.emit('notification_' + this.props.id + '_question', {});
-	}
-
-	handleSubmitQuestionTask() {
 		this.props.form.validateFields((errors, values) => {
 			if (!errors) {
 				values.task_id = this.props.key2.task.task_id;
@@ -35,6 +31,7 @@ class Question extends Component {
 					url: '/mobile/minhang/task/member/complete',
 					data: values,
 					success: function (data) {
+						notification.emit('notification_' + this.props.id + '_question', {});
 						this.handelSubmitResponse();
 					}.bind(this),
 					complete() {
@@ -51,23 +48,59 @@ class Question extends Component {
 
 		return (
 			<div>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WhiteSpace size="xl"/>
-				<WingBlank size="md">
-					<div className="upload-image" onClick={this.handleUploadImage.bind(this)}>
-						<img src={require('../assets/image/upload-image.png')} alt=""/>
-						<WhiteSpace size="xl"/>
-						<div className="upload-image-tip">
-							{this.props.task_name}
-						</div>
-					</div>
-				</WingBlank>
+				{
+					this.props.task.question_list.map((question, index) => {
+						if (question.question_type === 'RADIO') {
+							return (
+								<div key={index}>
+									<WhiteSpace size="lg"/>
+									<WhiteSpace size="lg"/>
+									<List renderHeader={() => question.question_title}>
+
+									</List>
+								</div>
+							);
+						} else if (question.question_type === 'CHECKBOX') {
+							return (
+								<div>
+									<WhiteSpace size="lg"/>
+									<WhiteSpace size="lg"/>
+									<List renderHeader={() => question.question_title}>
+
+									</List>
+								</div>
+							);
+						} else if (question.question_type === 'GAP_FILLING') {
+							return (
+								<div>
+									<WhiteSpace size="lg"/>
+									<WhiteSpace size="lg"/>
+									<List renderHeader={() => question.question_title}>
+										<TextareaItem
+											{...getFieldProps(`question_answer_${index}`, {
+												rules: [{
+													required: true,
+													message: '请填写答案'
+												}],
+												initialValue: ''
+											})}
+											error={!!getFieldError(`question_answer_${index}`)}
+											clear
+											title="答案"
+											rows={5}
+											autoHeight
+											placeholder="请填写答案"
+										/>
+									</List>
+								</div>
+							);
+						}
+						return null;
+					})
+				}
+				<WhiteSpace size="lg"/>
+				<WhiteSpace size="lg"/>
+				<Button className="btn" type="primary" onClick={this.handleSubmitAnswer.bind(this)}>提交</Button>
 			</div>
 		);
 	}
@@ -75,7 +108,7 @@ class Question extends Component {
 
 Question.propTypes = {
 	id: PropTypes.string.isRequired,
-	task_name: PropTypes.string.isRequired
+	task: PropTypes.object.isRequired
 };
 
 Question.defaultProps = {
