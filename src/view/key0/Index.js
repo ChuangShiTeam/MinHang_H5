@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
-import {createForm} from "rc-form";
-import {routerRedux} from 'dva/router';
 import {
     ActivityIndicator,
     WhiteSpace,
@@ -171,94 +169,6 @@ class Index extends Component {
         });
     }
 
-    handleSubmitQuestionTask() {
-        this.props.form.validateFields((errors, values) => {
-            if (!errors) {
-                let task = this.props.key0.task;
-                values.task_id = task.task_id;
-                values.key_activated_step = this.props.key0.selectedIndex;
-                http.request({
-                    url: '/mobile/minhang/task/member/complete',
-                    data: values,
-                    success: function (data) {
-
-                    }.bind(this),
-                    complete() {
-
-                    }
-                });
-            }
-        });
-    }
-
-    handleDownLoadWecatVoice(media_id) {
-        this.props.dispatch({
-            type: 'key0/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitRecordTask(data.file_id);
-                }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key0/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleSubmitRecordTask(file_id) {
-        this.props.dispatch({
-            type: 'key0/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/mobile/minhang/task/member/complete',
-            data: {
-                task_id: this.props.key0.task_id,
-                key_activated_step: this.props.key0.selectedIndex,
-                member_record: {
-                    record_file: file_id
-                }
-            },
-            success: function (data) {
-                this.props.dispatch({
-                    type: 'key0/fetch',
-                    data: {
-                        step: 2
-                    }
-                });
-                notification.emit('sendMessage', {
-                    targetId: '0',
-                    action: 'loadPoster',
-                    content: ''
-                });
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key0/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
     handleDownLoadWecatImage(media_id) {
         this.props.dispatch({
             type: 'key0/fetch',
@@ -330,8 +240,6 @@ class Index extends Component {
     render() {
         const Item = List.Item;
         const Step = Steps.Step;
-        const {getFieldProps, getFieldError} = this.props.form;
-        const RadioItem = Radio.RadioItem;
 
         return (
             <div>
@@ -423,5 +331,4 @@ class Index extends Component {
     }
 }
 
-Index = createForm()(Index);
 export default connect(({key0}) => ({key0}))(Index);

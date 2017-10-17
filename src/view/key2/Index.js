@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
-import {createForm} from "rc-form";
-import {routerRedux} from 'dva/router';
 import {
     ActivityIndicator,
     WhiteSpace,
@@ -17,7 +15,6 @@ import {
 } from 'antd-mobile';
 import Record from '../Record';
 
-import constant from '../../util/constant';
 import http from '../../util/http';
 import notification from '../../util/notification';
 import Picture from '../Picture';
@@ -234,33 +231,6 @@ class Index extends Component {
         });
     }
 
-    handleSubmitQuestionTask() {
-        this.props.form.validateFields((errors, values) => {
-            if (!errors) {
-                values.task_id = this.props.key2.task.task_id;
-                values.key_activated_step = this.props.key2.selectedIndex;
-                http.request({
-                    url: '/mobile/minhang/task/member/complete',
-                    data: values,
-                    success: function (data) {
-                        this.handelSubmitResponse();
-                    }.bind(this),
-                    complete() {
-
-                    }
-                });
-            }
-        });
-    }
-
-    handleUploadRecord() {
-
-    }
-
-    handleStopRecord() {
-
-    }
-
     handleDownLoadWecatVoice(media_id) {
         this.props.dispatch({
             type: 'key2/fetch',
@@ -462,9 +432,7 @@ class Index extends Component {
     render() {
         const Item = List.Item;
         const Step = Steps.Step;
-        const {getFieldProps, getFieldError} = this.props.form;
 
-        const RadioItem = Radio.RadioItem;
         return (
             <div>
                 <WhiteSpace size="lg"/>
@@ -687,5 +655,4 @@ class Index extends Component {
     }
 }
 
-Index = createForm()(Index);
 export default connect(({key2}) => ({key2}))(Index);
