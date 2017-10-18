@@ -154,194 +154,36 @@ class Index extends Component {
         });
     }
 
-    handleUploadRecord() {
-        window.wx.startRecord();
-        this.props.dispatch({
-            type: 'key3/fetch',
-            data: {
-                is_record: true
-            }
-        });
-        let that = this;
-        window.wx.onVoiceRecordEnd({
-            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
-            complete: function (res) {
-                var localId = res.localId;
-                window.wx.uploadVoice({
-                    localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
-                    isShowProgressTips: 1, // 默认为1，显示进度提示
-                    success: function (res) {
-                        var serverId = res.serverId; // 返回音频的服务器端ID
-                        that.handleDownLoadWecatVoice(serverId);
-                    }
-                });
-                that.props.dispatch({
-                    type: 'key3/fetch',
-                    data: {
-                        is_record: false
-                    }
-                });
-            }
-        });
-    }
-    handleStopRecord() {
-        let that = this;
-        window.wx.stopRecord({
-            success: function (res) {
-                var localId = res.localId;
-                window.wx.uploadVoice({
-                    localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
-                    isShowProgressTips: 1, // 默认为1，显示进度提示
-                    success: function (res) {
-                        var serverId = res.serverId; // 返回音频的服务器端ID
-                        that.handleDownLoadWecatVoice(serverId);
-                    }
-                });
-                that.props.dispatch({
-                    type: 'key3/fetch',
-                    data: {
-                        is_record: false
-                    }
-                });
-            }
-        });
-    }
+    handleSubmitLocationTask() {
+        this.props.form.validateFields((errors, values) => {
+            if (!errors) {
+                let question_list = this.props.key3.task.question_list;
+                let location_list = this.props.key3.task.location_list;
+                let member_question_list = [];
+                for (let i = 0; i < question_list.length; i++) {
+                    let index = location_list.findIndex(location => location.question_id === question_list[i].question_id);
+                    if (index === -1) {
 
-    handleDownLoadWecatVoice(media_id) {
-        this.props.dispatch({
-            type: 'key3/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitRecordTask(data.file_id);
+                    }
+                    member_question_list.push({
+                        question_id: question_list[i].question_id,
+                        member_answer: location_list[index].accuracy
+                    })
                 }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key3/fetch',
-                    data: {
-                        is_load: true
+                values.member_question_list = member_question_list;
+                values.task_id = this.props.key3.task.task_id;
+                values.key_activated_step = this.props.key3.selectedIndex;
+                http.request({
+                    url: '/mobile/minhang/task/member/complete',
+                    data: values,
+                    success: function (data) {
+                        this.handelSubmitResponse();
+                    }.bind(this),
+                    complete() {
+
                     }
                 });
-            }.bind(this)
-        });
-    }
-
-    handleSubmitRecordTask(file_id) {
-        this.props.dispatch({
-            type: 'key3/fetch',
-            data: {
-                is_load: false
             }
-        });
-        http.request({
-            url: '/mobile/minhang/task/member/complete',
-            data: {
-                task_id: this.props.key3.task_id,
-                member_record: {
-                    record_file: file_id
-                },
-                key_activated_step: this.props.key3.selectedIndex
-            },
-            success: function (data) {
-                this.handelSubmitResponse();
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key3/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleUploadImage() {
-        let that = this;
-        window.wx.chooseImage({
-            count: 1, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-            success: function (res) {
-                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                if (localIds && localIds.length === 1) {
-                    window.wx.uploadImage({
-                        localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-                        isShowProgressTips: 1, // 默认为1，显示进度提示
-                        success: function (res) {
-                            var serverId = res.serverId; // 返回图片的服务器端ID
-                            that.handleDownLoadWecatImage(serverId);  //后台下载图片
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    handleDownLoadWecatImage(media_id) {
-        this.props.dispatch({
-            type: 'key3/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitImageTask(data.file_id);
-                }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key3/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleSubmitImageTask(file_id) {
-        this.props.dispatch({
-            type: 'key3/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/mobile/minhang/task/member/complete',
-            data: {
-                task_id: this.props.key3.task_id,
-                member_picture: {
-                    picture_file: file_id
-                },
-                key_activated_step: this.props.key3.selectedIndex
-            },
-            success: function (data) {
-                this.handelSubmitResponse();
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key3/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
         });
     }
 
@@ -381,6 +223,37 @@ class Index extends Component {
             type: 'key3/fetch',
             data: {
                 selectedIndex: event.nativeEvent.selectedSegmentIndex
+            }
+        });
+    }
+
+    handleChooseLocation(question_id) {
+        window.wx.getLocation({
+            type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+            success: function (res) {
+                let latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                var speed = res.speed; // 速度，以米/每秒计
+                var accuracy = res.accuracy; // 位置精度
+                let location_list = this.props.key3.location_list;
+                let index = location_list.findIndex(location => location.question_id === question_id);
+                if (index === -1) {
+                    location_list.push({
+                        question_id: question_id,
+                        latitude: latitude,
+                        longitude: longitude,
+                        speed: speed,
+                        accuracy: accuracy
+                    });
+                } else {
+                    location_list[index] = {
+                        question_id: question_id,
+                        latitude: latitude,
+                        longitude: longitude,
+                        speed: speed,
+                        accuracy: accuracy
+                    }
+                }
             }
         });
     }
@@ -462,61 +335,20 @@ class Index extends Component {
                                                                 <div>
                                                                     {
                                                                         this.props.key3.task.task_type === 'QUESTION' ?
-                                                                            <div>
+                                                                            <List>
+                                                                                <WhiteSpace size="lg"/>
+                                                                                <WhiteSpace size="lg"/>
                                                                                 {
-                                                                                    this.props.key3.task.question_list.map((question, index) => {
-                                                                                        if (question.question_type === 'RADIO') {
-                                                                                            return (
-                                                                                                <div key={index}>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        } else if (question.question_type === 'CHECKBOX') {
-                                                                                            return (
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        } else if (question.question_type === 'GAP_FILLING') {
-                                                                                            return (
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-                                                                                                        <TextareaItem
-                                                                                                            {...getFieldProps(`question_answer_${index}`, {
-                                                                                                                rules: [{
-                                                                                                                    required: true,
-                                                                                                                    message: '请填写答案'
-                                                                                                                }],
-                                                                                                                initialValue: ''
-                                                                                                            })}
-                                                                                                            error={!!getFieldError(`question_answer_${index}`)}
-                                                                                                            clear
-                                                                                                            title="答案"
-                                                                                                            rows={5}
-                                                                                                            autoHeight
-                                                                                                            placeholder="请填写答案"
-                                                                                                        />
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        }
-                                                                                        return null;
-                                                                                    })
+                                                                                    this.props.key3.task.question_list.map((question, index) =>
+                                                                                        <Item arrow="horizontal" key={index} onClick={this.handleChooseLocation.bind(this)}>
+                                                                                            {question.question_title}
+                                                                                        </Item>
+                                                                                    )
                                                                                 }
                                                                                 <WhiteSpace size="lg"/>
                                                                                 <WhiteSpace size="lg"/>
                                                                                 <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
-                                                                            </div>
+                                                                            </List>
                                                                             :
                                                                             this.props.key3.task.task_type === 'PICTURE' ?
                                                                                 <div>

@@ -13,6 +13,7 @@ export default {
         task_id: '',
         task: null,
         member_task_list: [],
+        location_list: [],
         key_is_activated: false,
         is_record: false,
         file: null,
