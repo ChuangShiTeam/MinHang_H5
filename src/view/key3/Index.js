@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {createForm} from "rc-form";
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio, Result, Icon} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio, Result, Icon, Toast} from 'antd-mobile';
 
 import constant from '../../util/constant';
 import http from '../../util/http';
@@ -163,7 +163,8 @@ class Index extends Component {
                 for (let i = 0; i < question_list.length; i++) {
                     let index = location_list.findIndex(location => location.question_id === question_list[i].question_id);
                     if (index === -1) {
-
+                        Toast.info("请" + question_list[i].question_title, 1);
+                        break;
                     }
                     member_question_list.push({
                         question_id: question_list[i].question_id,
@@ -340,14 +341,15 @@ class Index extends Component {
                                                                                 <WhiteSpace size="lg"/>
                                                                                 {
                                                                                     this.props.key3.task.question_list.map((question, index) =>
-                                                                                        <Item arrow="horizontal" key={index} onClick={this.handleChooseLocation.bind(this)}>
+                                                                                        <Item arrow="horizontal"
+                                                                                              key={index} onClick={this.handleChooseLocation.bind(this)}>
                                                                                             {question.question_title}
                                                                                         </Item>
                                                                                     )
                                                                                 }
                                                                                 <WhiteSpace size="lg"/>
                                                                                 <WhiteSpace size="lg"/>
-                                                                                <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
+                                                                                <Button className="btn" type="primary" onClick={this.handleSubmitLocationTask.bind(this)}>提交</Button>
                                                                             </List>
                                                                             :
                                                                             this.props.key3.task.task_type === 'PICTURE' ?
