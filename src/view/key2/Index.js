@@ -274,7 +274,8 @@ class Index extends Component {
                 member_record: {
                     record_file: file_id
                 },
-                key_activated_step: this.props.key2.selectedIndex
+                key_activated_step: this.props.key2.selectedIndex,
+                member_task_type: this.props.key2.selectedIndex === 0 ? 'PARTY_HISTORY_RECORD' : 'PARTY_SONG_RECORD'
             },
             success: function (data) {
                 this.handelSubmitResponse();
@@ -354,7 +355,8 @@ class Index extends Component {
                 member_picture: {
                     picture_file: file_id
                 },
-                key_activated_step: this.props.key2.selectedIndex
+                key_activated_step: this.props.key2.selectedIndex,
+                member_task_type: 'HAND_PRINT_PICTURE'
             },
             success: function (data) {
                 this.handelSubmitResponse();

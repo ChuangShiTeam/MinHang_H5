@@ -212,7 +212,8 @@ class Index extends Component {
                 key_activated_step: this.props.key0.selectedIndex,
                 member_picture: {
                     picture_file: file_id
-                }
+                },
+                member_task_type: 'POSTER_PICTURE'
             },
             success: function (data) {
                 this.props.dispatch({

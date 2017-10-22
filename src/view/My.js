@@ -79,6 +79,7 @@ class My extends Component {
                         this.props.my.history_list.map((history, index) =>
                             <Item
                                 key={index}
+                                thumb={require('../assets/svg/history.svg')}
                                 arrow="horizontal"
                                 onClick={this.handleHistory.bind(this, history.member_history_id)}
                             >

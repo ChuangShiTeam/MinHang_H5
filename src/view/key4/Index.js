@@ -178,6 +178,7 @@ class Index extends Component {
                 values.member_question_list = member_question_list;
                 values.task_id = this.props.key4.task.task_id;
                 values.key_activated_step = this.props.key4.selectedIndex;
+                values.member_task_type = 'TIMELINE_EVENT_QUESTION';
                 http.request({
                     url: '/mobile/minhang/task/member/complete',
                     data: values,
