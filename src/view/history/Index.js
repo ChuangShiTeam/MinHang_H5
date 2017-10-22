@@ -38,16 +38,10 @@ class Index extends Component {
                 member_history_id: this.props.params.history_id
             },
             success: function (data) {
-                let step = 0;
-                if (data.member_key && data.member_key.key_is_activated) {
-                    step = 2;
-                }
                 this.props.dispatch({
                     type: 'history/fetch',
                     data: {
-                        key: data.key,
-                        member_key: data.member_key,
-                        step: step
+                        member_task_list: data
                     }
                 });
             }.bind(this),
