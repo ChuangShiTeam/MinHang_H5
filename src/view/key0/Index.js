@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
+import {routerRedux} from "dva/router";
 import {
     ActivityIndicator,
     WhiteSpace,
@@ -237,6 +238,61 @@ class Index extends Component {
         });
     }
 
+    handleCreateHistory() {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_load: false
+            }
+        });
+        http.request({
+            url: '/mobile/minhang/member/history/create',
+            data: {},
+            success: function (data) {
+                Toast.info('生成纪念册成功', 1)
+
+            }.bind(this),
+            complete: function () {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
+    }
+
+    handleItineraryRestart() {
+        this.props.dispatch({
+            type: 'key0/fetch',
+            data: {
+                is_load: false
+            }
+        });
+        http.request({
+            url: '/mobile/minhang/member/itinerary/restart',
+            data: {},
+            success: function (data) {
+                Toast.info('重启寻钥之旅成功', 3);
+                setTimeout(function () {
+                    this.props.dispatch(routerRedux.push({
+                        pathname: '/index',
+                        query: {},
+                    }));
+                }.bind(this), 3000);
+            }.bind(this),
+            complete: function () {
+                this.props.dispatch({
+                    type: 'key0/fetch',
+                    data: {
+                        is_load: true
+                    }
+                });
+            }.bind(this)
+        });
+    }
+
     render() {
         const Item = List.Item;
         const Step = Steps.Step;
@@ -304,6 +360,10 @@ class Index extends Component {
                                         </div>
                                     </div>
                                 </WingBlank>
+                                <WhiteSpace size="xl"/>
+                                <Button type="primary" onClick={this.handleCreateHistory.bind(this)}>生成纪念册</Button>
+                                <WhiteSpace size="xl"/>
+                                <Button type="primary" onClick={this.handleItineraryRestart.bind(this)}>重启寻钥之旅</Button>
                             </div>
                             :
                             ''

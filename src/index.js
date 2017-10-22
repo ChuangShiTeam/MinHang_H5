@@ -15,6 +15,7 @@ import key2 from './model/key2';
 import key3 from './model/key3';
 import key4 from './model/key4';
 import key5 from './model/key5';
+import history from './model/history';
 
 import constant from './util/constant';
 import notification from './util/notification';
@@ -62,6 +63,7 @@ if (result) {
     app.model(key3);
     app.model(key4);
     app.model(key5);
+    app.model(history);
 
     app.router(Router);
 

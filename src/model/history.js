@@ -1,11 +1,9 @@
 export default {
-    namespace: 'my',
+    namespace: 'history',
 
     state: {
         is_load: false,
-        user_name: '',
-        user_avatar: '',
-        history_list: [],
+        history: [],
         scroll_top: 0
     },
 

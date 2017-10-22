@@ -10,6 +10,7 @@ import Key5 from './view/key5/Index';
 import ArticleIndex from './view/article/ArticleIndex';
 import ArticleDetail from './view/article/ArticleDetail';
 import My from './view/My';
+import History from './view/history/Index';
 
 import constant from './util/constant';
 import notification from './util/notification';
@@ -37,6 +38,7 @@ function RouterConfig({history}) {
                     <Route path="/article/index" component={ArticleIndex}/>
                     <Route path="/article/detail/:article_id" component={ArticleDetail}/>
                     <Route path="/my" component={My}/>
+                    <Route path="/history/index/:history_id" component={History}/>
                 </Route>
                 <Route path="/key/f9892bc1d79c46e2a06042a935ac02fb" component={Key0}/>
                 <Route path="/key/7a3995d91c9d41d5a946a990a53e45bb" component={Key2}/>
