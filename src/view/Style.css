@@ -97,3 +97,43 @@ body, html {
     color: #9e9e9e;
     text-align: center;
 }
+
+.history-title {
+    color: #9e9e9e;
+    text-align: center;
+}
+
+.history-image img{
+    width: 40%;
+    margin: 0 auto;
+    display: block;
+}
+
+.history-image .history-image-tip{
+    color: #9e9e9e;
+    text-align: center;
+}
+
+.history-question{
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+}
+
+.history-question .history-question-title{
+    color: #9e9e9e;
+    text-align: center;
+}
+.history-question .history-answer{
+    color: #9e9e9e;
+    margin-left: 50px;
+}
+
+.history-footer {
+    position: fixed;
+    height: 100px;
+    left: 0px;
+    bottom: 70px;
+    width: 100%;
+    text-align: center;
+}

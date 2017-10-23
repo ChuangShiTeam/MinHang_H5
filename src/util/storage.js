@@ -19,6 +19,9 @@ function getToken() {
 
     if (constant.is_test) {
         token = 'l0BNycgZiMCRb4OXFFtdKR8n6ipjDATuQ/82R+p5vewwDPpsrkJ0kshtjpJbNC/fklIFWJyfVktPh0c+++f0FYZz7hrFwDQGeyxzDBKWW2w=';
+
+        //token = 'LfgjlSw5wOycQwpcVDMjOoYz//yozWUBAORcSu0fMPnOQOfnLAaY2XRto8tiHoAbwxIYaxQCkC+nRhKwUTrkw+G//BHO2b6CIcC1A32vlWE=';
+
     }
 
     if (token == null) {
