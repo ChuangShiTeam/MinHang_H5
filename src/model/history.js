@@ -7,12 +7,12 @@ export default {
         party_history_record: {},
         party_song_record: {},
         hand_print_picture: {},
-        location_question: {},
+        location_question: [],
         info_question: {},
         timeline_event_question: [],
         video_question: [],
         selectedIndex: 0,
-        count: 0,
+        count: 6,
         scroll_top: 0
     },
 
