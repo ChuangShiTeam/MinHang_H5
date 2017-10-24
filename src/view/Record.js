@@ -11,6 +11,7 @@ class Record extends Component {
         this.state = {
             is_start: false,
             is_record: false,
+            is_play: false,
             localId: ''
         }
     }
@@ -73,6 +74,26 @@ class Record extends Component {
         });
     }
 
+    handlePlayVoice() {
+        var localId = this.state.localId;
+        window.wx.playVoice({
+            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
+        });
+        this.setState({
+            is_play: true
+        })
+    }
+
+    handleStopVoice() {
+        var localId = this.state.localId;
+        window.wx.stopVoice({
+            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
+        });
+        this.setState({
+            is_play: false
+        })
+    }
+
     render() {
 
         return (
@@ -85,10 +106,13 @@ class Record extends Component {
                 <WhiteSpace size="xl"/>
                 <WingBlank size="md">
                     {
-                        this.state.is_start ?
+                        !this.state.is_play?
+                            this.state.is_start ?
                             <Button type="primary" onClick={this.handleStopRecord.bind(this)}>停止录音</Button>
                             :
                             <Button icon="check-circle-o" type="primary" onClick={this.handleStartRecord.bind(this)}>开始录音</Button>
+                            :
+                            null
 
                     }
                     <WhiteSpace size="xl"/>
@@ -97,9 +121,21 @@ class Record extends Component {
                             一分钟自动完成录音并上传
                         </div>
                     </div>
+                    {
+                        !this.state.is_start && this.state.is_record && !this.state.is_play?
+                            <Button icon="check-circle-o"  type="primary" onClick={this.handlePlayVoice.bind(this)}>播放录音</Button>
+                            :
+                            null
+                    }
+                    {
+                        !this.state.is_start && this.state.is_record && this.state.is_play?
+                            <Button icon="check-circle-o"  type="primary" onClick={this.handleStopVoice.bind(this)}>停止播放</Button>
+                            :
+                            null
+                    }
                     <WhiteSpace size="xl"/>
                     {
-                        !this.state.is_start && this.state.is_record ?
+                        !this.state.is_start && this.state.is_record && !this.state.is_play?
                             <Button icon="check-circle-o"  type="primary" onClick={this.handleUploadRecord.bind(this)}>完成录音(上传录音)</Button>
                             :
                             ""
