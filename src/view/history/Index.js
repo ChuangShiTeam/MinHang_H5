@@ -27,6 +27,23 @@ class Index extends Component {
     }
 
     componentWillUnmount() {
+        this.props.dispatch({
+            type: 'history/fetch',
+            data: {
+                is_load: false,
+                poster_picture: {},
+                party_history_record: {},
+                party_song_record: {},
+                hand_print_picture: {},
+                location_question: [],
+                info_question: {},
+                timeline_event_question: [],
+                video_question: [],
+                selectedIndex: 0,
+                count: 6,
+                scroll_top: 0
+            }
+        });
     }
 
     handleLoadHistory() {
@@ -83,6 +100,8 @@ class Index extends Component {
     }
 
     render() {
+        const Item = List.Item;
+        const Brief = Item.Brief;
         return (
             <div>
                 <div>
@@ -91,32 +110,39 @@ class Index extends Component {
                           selectedIndex={this.props.history.selectedIndex}
                           afterChange={this.afterChange.bind(this)}
                           swipeSpeed={35}>
-
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <h2 className="history-title">
-                            我的激情之钥
-                        </h2>
+                        <div className="history-key">
+                            <img src={require('../../assets/image/key0.png')} alt=""/>
+                        </div>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
                         {
                             this.props.history.poster_picture.file_path?
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-tip">
                                             自拍了一张笑脸
                                         </div>
-                                        <WhiteSpace size="xl"/>
-                                        <img src={"http://api.chuangshi.nowui.com" + this.props.history.poster_picture.file_path} alt=""/>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-image">
+                                            <img src={"http://api.chuangshi.nowui.com" + this.props.history.poster_picture.file_path} alt=""/>
+                                        </div>
                                     </div>
                                 </WingBlank>
                                 :
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             未激活
                                         </div>
                                     </div>
@@ -126,16 +152,21 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <h2 className="history-title">
-                            我的团队之钥
-                        </h2>
-                        <WhiteSpace size="lg"/>
+                        <div className="history-key">
+                            <img src={require('../../assets/image/key1.png')} alt=""/>
+                        </div>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WingBlank size="md">
-                            <div className="history-image">
-                                <div className="history-image-tip">
+                        <WhiteSpace size="lg"/>
+                        <WingBlank size="lg">
+                            <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <WhiteSpace size="lg"/>
+                                <div className="history-result-tip">
                                     未激活
                                 </div>
                             </div>
@@ -144,43 +175,58 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <h2 className="history-title">
-                            我的信念之钥
-                        </h2>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
+                        <div className="history-key">
+                            <img src={require('../../assets/image/key2.png')} alt=""/>
+                        </div>
                         <WhiteSpace size="lg"/>
                         {
                             this.props.history.party_history_record.file_path && this.props.history.party_song_record.file_path && this.props.history.hand_print_picture.file_path?
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.13 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             朗读了一段党史
                                         </div>
-                                        <WhiteSpace size="xl"/>
-                                        <div className="history-image-tip">
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-audio">
                                             <audio src={"http://api.chuangshi.nowui.com" + this.props.history.party_history_record.file_path} controls="controls"></audio>
                                         </div>
-                                        <WhiteSpace size="xl"/>
-                                        <div className="history-image-tip">
+                                    </div>
+                                    <WhiteSpace size="xs"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.13 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             歌唱了一首党歌
                                         </div>
-                                        <div className="history-image-tip">
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-audio">
                                             <audio src={"http://api.chuangshi.nowui.com" + this.props.history.party_song_record.file_path} controls="controls"></audio>
                                         </div>
-                                        <WhiteSpace size="xl"/>
-                                        <div className="history-image-tip">
+                                    </div>
+                                    <WhiteSpace size="xs"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-tip">
                                             手印
                                         </div>
-                                        <WhiteSpace size="xl"/>
-                                        <img src={"http://api.chuangshi.nowui.com" + this.props.history.hand_print_picture.file_path} alt=""/>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-image">
+                                            <img src={"http://api.chuangshi.nowui.com" + this.props.history.hand_print_picture.file_path} alt=""/>
+                                        </div>
                                     </div>
                                 </WingBlank>
                                 :
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <WhiteSpace size="lg"/>
+                                    <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             未激活
                                         </div>
                                     </div>
@@ -190,48 +236,51 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <h2 className="history-title">
-                            我的信息之钥
-                        </h2>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
+                        <div className="history-key">
+                            <img src={require('../../assets/image/key3.png')} alt=""/>
+                        </div>
                         <WhiteSpace size="lg"/>
                         {
                             this.props.history.location_question.length > 0 && this.props.history.info_question.question ?
-                                <WingBlank size="md">
-                                    <div className="history-question">
-                                        <div className="history-question-title">
+                                <WingBlank size="lg">
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.31 + 'px'}}>
+                                        <WhiteSpace size="sm"/>
+                                        <div className="history-result-tip">
                                             标注了位置信息
                                         </div>
-                                        <WhiteSpace size="xl"/>
+                                        <WhiteSpace size="sm"/>
+                                        <List>
                                         {
                                             this.props.history.location_question.length > 0 ? this.props.history.location_question.map((location, index) =>
-                                                <div key={index}>
-                                                    <div className="history-answer">
-                                                        {location.question.question_title}: {location.member_answer}
+                                                <Item key={index}
+                                                      thumb={require('../../assets/svg/map.svg')}>
+                                                    <div className="history-result-location">
+                                                        {location.question.question_title}({location.member_answer})
                                                     </div>
-                                                    <WhiteSpace size="xl"/>
-                                                </div>
+                                                </Item>
                                             )
                                                 :
                                                 null
 
                                         }
-
-                                        <div className="history-question-title">
+                                        </List>
+                                    </div>
+                                    <WhiteSpace size="xs"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-tip">
                                             回答了一道问题
                                         </div>
-                                        <WhiteSpace size="xl"/>
+                                        <WhiteSpace size="md"/>
                                         {
                                             this.props.history.info_question.question?
                                                 <div>
-                                                    <div className="history-answer">
-                                                        {this.props.history.info_question.question.question_title}
+                                                    <div className="history-result-question-title">
+                                                        问：{this.props.history.info_question.question.question_title}
                                                     </div>
-                                                    <WhiteSpace size="xl"/>
-                                                    <div className="history-answer">
-                                                        答案：{this.props.history.info_question.member_answer}
+                                                    <WhiteSpace size="xs"/>
+                                                    <div className="history-result-question-answer">
+                                                        答：{this.props.history.info_question.member_answer}
                                                     </div>
                                                 </div>
                                                 :
@@ -241,9 +290,17 @@ class Index extends Component {
                                     </div>
                                 </WingBlank>
                                 :
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <WhiteSpace size="lg"/>
+                                    <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.33 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             未激活
                                         </div>
                                     </div>
@@ -254,43 +311,48 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <h2 className="history-title">
-                            我的力量之钥
-                        </h2>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
+                        <div className="history-key">
+                            <img src={require('../../assets/image/key4.png')} alt=""/>
+                        </div>
                         <WhiteSpace size="lg"/>
                         {
                             this.props.history.timeline_event_question.length > 0 ?
-                                <WingBlank size="md">
-                            <div className="history-question">
-                                <div className="history-question-title">
-                                    回答了两道问题
-                                </div>
-                                <WhiteSpace size="xl"/>
-                                {
-                                    this.props.history.timeline_event_question.map((timeline_event, index) =>
-                                        <div key={index}>
-                                            <div className="history-answer">
-                                                {timeline_event.question.question_title}
-                                            </div>
-                                            <WhiteSpace size="xl"/>
-                                            <div className="history-answer">
-                                                答案：{timeline_event.member_answer}
-                                            </div>
-                                            <WhiteSpace size="xl"/>
-                                            <WhiteSpace size="xl"/>
+                                <WingBlank size="lg">
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-tip">
+                                            回答了两道问题
                                         </div>
-                                    )
+                                        <WhiteSpace size="md"/>
+                                        {
+                                            this.props.history.timeline_event_question.map((timeline_event, index) =>
+                                                <div key={index}>
+                                                    <div className="history-result-question-title">
+                                                        问：{timeline_event.question.question_title}
+                                                    </div>
+                                                    <WhiteSpace size="xs"/>
+                                                    <div className="history-result-question-answer">
+                                                        答：{timeline_event.member_answer}
+                                                    </div>
+                                                    <WhiteSpace size="xl"/>
+                                                </div>
+                                            )
 
-                                }
-                            </div>
-                        </WingBlank>
+                                        }
+                                    </div>
+                                </WingBlank>
                                 :
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <WhiteSpace size="lg"/>
+                                    <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.33 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             未激活
                                         </div>
                                     </div>
@@ -300,43 +362,47 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <h2 className="history-title">
-                            我的智慧之钥
-                        </h2>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
+                        <div className="history-key">
+                            <img src={require('../../assets/image/key5.png')} alt=""/>
+                        </div>
                         <WhiteSpace size="lg"/>
                         {
                             this.props.history.video_question.length > 0 ?
-                                <WingBlank size="md">
-                            <div className="history-question">
-                                <div className="history-question-title">
-                                    回答了两道问题
-                                </div>
-                                <WhiteSpace size="xl"/>
-                                {
-                                    this.props.history.video_question.map((video, index) =>
-                                        <div key={index}>
-                                            <div className="history-answer">
-                                                {video.question.question_title}
-                                            </div>
-                                            <WhiteSpace size="xl"/>
-                                            <div className="history-answer">
-                                                答案：{video.member_answer}
-                                            </div>
-                                            <WhiteSpace size="xl"/>
-                                            <WhiteSpace size="xl"/>
+                                <WingBlank size="lg">
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
+                                        <WhiteSpace size="md"/>
+                                        <div className="history-result-tip">
+                                            回答了两道问题
                                         </div>
-                                    )
-
-                                }
-                            </div>
-                        </WingBlank>
+                                        <WhiteSpace size="md"/>
+                                        {
+                                            this.props.history.video_question.map((video, index) =>
+                                                <div key={index}>
+                                                    <div className="history-result-question-title">
+                                                        问：{video.question.question_title}
+                                                    </div>
+                                                    <WhiteSpace size="xs"/>
+                                                    <div className="history-result-question-answer">
+                                                        答：{video.member_answer}
+                                                    </div>
+                                                    <WhiteSpace size="xl"/>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </WingBlank>
                                 :
-                                <WingBlank size="md">
-                                    <div className="history-image">
-                                        <div className="history-image-tip">
+                                <WingBlank size="lg">
+                                    <WhiteSpace size="lg"/>
+                                    <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.33 + 'px'}}>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="lg"/>
+                                        <div className="history-result-tip">
                                             未激活
                                         </div>
                                     </div>
