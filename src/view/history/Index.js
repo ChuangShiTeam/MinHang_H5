@@ -101,7 +101,6 @@ class Index extends Component {
 
     render() {
         const Item = List.Item;
-        const Brief = Item.Brief;
         return (
             <div>
                 <div>
@@ -112,12 +111,9 @@ class Index extends Component {
                           swipeSpeed={35}>
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
                         <div className="history-key">
                             <img src={require('../../assets/image/key0.png')} alt=""/>
                         </div>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
                         {
                             this.props.history.poster_picture.file_path?
@@ -128,15 +124,16 @@ class Index extends Component {
                                             自拍了一张笑脸
                                         </div>
                                         <WhiteSpace size="md"/>
-                                        <div className="history-result-image">
-                                            <img src={"http://api.chuangshi.nowui.com" + this.props.history.poster_picture.file_path} alt=""/>
+                                        <div className="history-result-image" >
+                                            <img
+                                                style={{width: document.documentElement.clientWidth * 0.45, height: document.documentElement.clientHeight * 0.22 + 'px'}}
+                                                src={"http://api.chuangshi.nowui.com" + this.props.history.poster_picture.file_path} alt=""/>
                                         </div>
                                     </div>
                                 </WingBlank>
                                 :
                                 <WingBlank size="lg">
                                     <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
@@ -151,16 +148,12 @@ class Index extends Component {
                     </div>
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
                         <div className="history-key">
                             <img src={require('../../assets/image/key1.png')} alt=""/>
                         </div>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
                         <WingBlank size="lg">
                             <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
-                                <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
@@ -174,31 +167,30 @@ class Index extends Component {
                     </div>
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
                         <div className="history-key">
                             <img src={require('../../assets/image/key2.png')} alt=""/>
                         </div>
-                        <WhiteSpace size="lg"/>
+                        <WhiteSpace size="md"/>
                         {
                             this.props.history.party_history_record.file_path && this.props.history.party_song_record.file_path && this.props.history.hand_print_picture.file_path?
                                 <WingBlank size="lg">
                                     <div className="history-result" style={{height: document.documentElement.clientHeight * 0.13 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="md"/>
                                         <div className="history-result-tip">
                                             朗读了一段党史
                                         </div>
-                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="md"/>
                                         <div className="history-result-audio">
                                             <audio src={"http://api.chuangshi.nowui.com" + this.props.history.party_history_record.file_path} controls="controls"></audio>
                                         </div>
                                     </div>
                                     <WhiteSpace size="xs"/>
                                     <div className="history-result" style={{height: document.documentElement.clientHeight * 0.13 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="md"/>
                                         <div className="history-result-tip">
                                             歌唱了一首党歌
                                         </div>
-                                        <WhiteSpace size="lg"/>
+                                        <WhiteSpace size="md"/>
                                         <div className="history-result-audio">
                                             <audio src={"http://api.chuangshi.nowui.com" + this.props.history.party_song_record.file_path} controls="controls"></audio>
                                         </div>
@@ -211,16 +203,14 @@ class Index extends Component {
                                         </div>
                                         <WhiteSpace size="md"/>
                                         <div className="history-result-image">
-                                            <img src={"http://api.chuangshi.nowui.com" + this.props.history.hand_print_picture.file_path} alt=""/>
+                                            <img style={{width: document.documentElement.clientWidth * 0.45, height: document.documentElement.clientHeight * 0.22 + 'px'}}
+                                                src={"http://api.chuangshi.nowui.com" + this.props.history.hand_print_picture.file_path} alt=""/>
                                         </div>
                                     </div>
                                 </WingBlank>
                                 :
                                 <WingBlank size="lg">
-                                    <WhiteSpace size="lg"/>
-                                    <WhiteSpace size="lg"/>
                                     <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
@@ -235,7 +225,6 @@ class Index extends Component {
                     </div>
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
-                        <WhiteSpace size="lg"/>
                         <div className="history-key">
                             <img src={require('../../assets/image/key3.png')} alt=""/>
                         </div>
@@ -243,7 +232,7 @@ class Index extends Component {
                         {
                             this.props.history.location_question.length > 0 && this.props.history.info_question.question ?
                                 <WingBlank size="lg">
-                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.31 + 'px'}}>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
                                         <WhiteSpace size="sm"/>
                                         <div className="history-result-tip">
                                             标注了位置信息
@@ -291,10 +280,7 @@ class Index extends Component {
                                 </WingBlank>
                                 :
                                 <WingBlank size="lg">
-                                    <WhiteSpace size="lg"/>
-                                    <WhiteSpace size="lg"/>
-                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.33 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
@@ -309,7 +295,6 @@ class Index extends Component {
 
                     </div>
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
-                        <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
                             <img src={require('../../assets/image/key4.png')} alt=""/>
@@ -343,10 +328,7 @@ class Index extends Component {
                                 </WingBlank>
                                 :
                                 <WingBlank size="lg">
-                                    <WhiteSpace size="lg"/>
-                                    <WhiteSpace size="lg"/>
-                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.33 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
@@ -360,7 +342,6 @@ class Index extends Component {
                         }
                     </div>
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
-                        <WhiteSpace size="lg"/>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
                             <img src={require('../../assets/image/key5.png')} alt=""/>
@@ -393,10 +374,7 @@ class Index extends Component {
                                 </WingBlank>
                                 :
                                 <WingBlank size="lg">
-                                    <WhiteSpace size="lg"/>
-                                    <WhiteSpace size="lg"/>
-                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.33 + 'px'}}>
-                                        <WhiteSpace size="lg"/>
+                                    <div className="history-result" style={{height: document.documentElement.clientHeight * 0.3 + 'px'}}>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>
                                         <WhiteSpace size="lg"/>

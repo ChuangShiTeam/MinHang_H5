@@ -110,9 +110,8 @@ body, html {
     border-radius: 20px;
     overflow-y: scroll;
 }
+
 .history-result .history-result-image img{
-    width: 50%;
-    height: 75%;
     margin: 0 auto;
     display: block;
 }
@@ -132,7 +131,8 @@ body, html {
 
 .history-result .history-result-location{
     color: #4d4d4d;
-    font-size: 28px;
+    font-size: 20px;
+    margin-left: 10px;
 }
 
 .history-result .history-result-question-title{
