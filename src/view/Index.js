@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, List, Toast} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, List, Modal, Toast} from 'antd-mobile';
 
 import constant from '../util/constant';
 import http from '../util/http';
+import notification from '../../util/notification';
 
 class Index extends Component {
     constructor(props) {
@@ -25,6 +26,22 @@ class Index extends Component {
 
     }
 
+    handleMemberSign() {
+        http.request({
+            url: '/mobile/minhang/member/sign',
+            data: {},
+            success: function (data) {
+                notification.emit('sendMessage', {
+                    targetId: '0',
+                    action: 'loadMember',
+                    content: ''
+                });
+            }.bind(this),
+            complete: function () {
+            }.bind(this)
+        });
+    }
+
     handleLoadKey() {
         http.request({
             url: '/mobile/minhang/key/list',
@@ -39,7 +56,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 document.body.scrollTop = this.props.index.scroll_top;
-
+                this.handleMemberSign();
                 this.props.dispatch({
                     type: 'index/fetch',
                     data: {
@@ -67,6 +84,7 @@ class Index extends Component {
     render() {
         const Item = List.Item;
         const Brief = Item.Brief;
+        const alert = Modal.alert;
 
         return (
             <div>
