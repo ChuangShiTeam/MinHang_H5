@@ -18,7 +18,7 @@ import Record from '../Record';
 
 import http from '../../util/http';
 import notification from '../../util/notification';
-import Picture from '../Picture';
+import storage from '../../util/storage';
 
 class Index extends Component {
     constructor(props) {
@@ -56,26 +56,6 @@ class Index extends Component {
             });
         });
 
-        notification.on('notification_2_picture', this, function (data) {
-            window.wx.chooseImage({
-                count: 1, // 默认9
-                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                success: function (res) {
-                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                    if (localIds && localIds.length === 1) {
-                        window.wx.uploadImage({
-                            localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-                            isShowProgressTips: 1, // 默认为1，显示进度提示
-                            success: function (res) {
-                                var serverId = res.serverId; // 返回图片的服务器端ID
-                                this.handleDownLoadWecatImage(serverId);  //后台下载图片
-                            }.bind(this)
-                        });
-                    }
-                }.bind(this)
-            });
-        });
     }
 
     componentWillUnmount() {
@@ -85,7 +65,6 @@ class Index extends Component {
 
         notification.remove('notification_2_upload_record', this);
 
-        notification.remove('notification_2_picture', this);
     }
 
     handleLoadKey() {
@@ -165,15 +144,32 @@ class Index extends Component {
                             if (data) {
                                 Toast.fail(data, 2);
                             } else {
-                                that.props.dispatch({
-                                    type: 'key2/fetch',
-                                    data: {
-                                        task_id: result.task_id,
-                                        secene_id: result.secene_id,
-                                        action: result.action
-                                    }
-                                });
-                                that.handleLoadTask(result.task_id);
+                                if (that.props.key2.selectedIndex === 2) {
+                                    notification.emit('sendMessage', {
+                                        targetId: '3',
+                                        action: 'loadHandlePrint',
+                                        content: storage.getToken()
+                                    });
+                                    that.props.dispatch({
+                                        type: 'key2/fetch',
+                                        data: {
+                                            task_id: result.task_id,
+                                            secene_id: result.secene_id,
+                                            action: result.action,
+                                            step3: 1
+                                        }
+                                    });
+                                } else {
+                                    that.props.dispatch({
+                                        type: 'key2/fetch',
+                                        data: {
+                                            task_id: result.task_id,
+                                            secene_id: result.secene_id,
+                                            action: result.action
+                                        }
+                                    });
+                                    that.handleLoadTask(result.task_id);
+                                }
                             }
                         },
                         complete: function () {
@@ -203,21 +199,17 @@ class Index extends Component {
             success: function (data) {
                 let step1 = this.props.key2.step1;
                 let step2 = this.props.key2.step2;
-                let step3 = this.props.key2.step3;
                 if (this.props.key2.selectedIndex === 0) {
                     step1 = 1;
                 } else if (this.props.key2.selectedIndex === 1) {
                     step2 = 1;
-                } else if (this.props.key2.selectedIndex === 2) {
-                    step3 = 1;
                 }
                 this.props.dispatch({
                     type: 'key2/fetch',
                     data: {
                         task: data.task,
                         step1: step1,
-                        step2: step2,
-                        step3: step3
+                        step2: step2
                     }
                 });
             }.bind(this),
@@ -291,87 +283,6 @@ class Index extends Component {
         });
     }
 
-    handleUploadImage() {
-        let that = this;
-        window.wx.chooseImage({
-            count: 1, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-            success: function (res) {
-                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                if (localIds && localIds.length === 1) {
-                    window.wx.uploadImage({
-                        localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-                        isShowProgressTips: 1, // 默认为1，显示进度提示
-                        success: function (res) {
-                            var serverId = res.serverId; // 返回图片的服务器端ID
-                            that.handleDownLoadWecatImage(serverId);  //后台下载图片
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    handleDownLoadWecatImage(media_id) {
-        this.props.dispatch({
-            type: 'key2/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitImageTask(data.file_id);
-                }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key2/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleSubmitImageTask(file_id) {
-        this.props.dispatch({
-            type: 'key2/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/mobile/minhang/task/member/complete',
-            data: {
-                task_id: this.props.key2.task_id,
-                member_picture: {
-                    picture_file: file_id
-                },
-                key_activated_step: this.props.key2.selectedIndex,
-                member_task_type: 'HAND_PRINT_PICTURE'
-            },
-            success: function (data) {
-                this.handelSubmitResponse();
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key2/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
     handelSubmitResponse() {
         let step1 = this.props.key2.step1;
         let step2 = this.props.key2.step2;
@@ -391,14 +302,6 @@ class Index extends Component {
             notification.emit('sendMessage', {
                 targetId: '2',
                 action: 'loadPartySong',
-                content: ''
-            });
-        } else if (selectedIndex === 2) {
-            step3 = 2;
-            selectedIndex = (step1 === 2?1:0);
-            notification.emit('sendMessage', {
-                targetId: '3',
-                action: 'loadHandlePrint',
                 content: ''
             });
         }
@@ -658,14 +561,25 @@ class Index extends Component {
                                                                 <WhiteSpace size="lg"/>
                                                                 <WhiteSpace size="lg"/>
                                                                 <Button
-                                                                    onClick={this.handleQRCode.bind(this)}>扫描上传手印二维码</Button>
+                                                                    onClick={this.handleQRCode.bind(this)}>扫描手印二维码</Button>
                                                             </div>
                                                             :
                                                             ''
                                                     }
                                                     {
                                                         this.props.key2.step3 === 1 ?
-                                                            <Picture id="2" task_name={this.props.key2.task.task_name}/>
+                                                            <div>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                <WhiteSpace size="lg"/>
+                                                                按手印并上传手印图片完成任务
+                                                            </div>
                                                             :
                                                             ''
                                                     }

@@ -5,7 +5,7 @@ import {ActivityIndicator, WhiteSpace, List, Modal, Toast} from 'antd-mobile';
 
 import constant from '../util/constant';
 import http from '../util/http';
-import notification from '../../util/notification';
+import notification from '../util/notification';
 
 class Index extends Component {
     constructor(props) {
