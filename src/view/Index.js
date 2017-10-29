@@ -12,7 +12,7 @@ class Index extends Component {
         super(props);
 
         this.state = {
-
+            is_show_sign_success: false
         }
     }
 
@@ -36,6 +36,15 @@ class Index extends Component {
                     action: 'loadMember',
                     content: ''
                 });
+                this.setState({
+                    is_show_sign_success: true
+                }, function() {
+                    setTimeout(function() {
+                        this.setState({
+                            is_show_sign_success: false
+                        });
+                    }.bind(this), 2000)
+                }.bind(this));
             }.bind(this),
             complete: function () {
             }.bind(this)
@@ -56,7 +65,6 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 document.body.scrollTop = this.props.index.scroll_top;
-                this.handleMemberSign();
                 this.props.dispatch({
                     type: 'index/fetch',
                     data: {
@@ -88,6 +96,17 @@ class Index extends Component {
 
         return (
             <div>
+                {
+                    this.state.is_show_sign_success ?
+                    <div style={{zIndex: 10, position:'fixed'}}>
+                        <img src={require('../assets/image/sign.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}/>
+                    </div>
+                    :
+                    null
+                }
+                <div style={{position: 'fixed', top: document.documentElement.clientWidth * 0.38 + 'px', right: document.documentElement.clientWidth* 0.01 + 'px'}} onClick={this.handleMemberSign.bind(this)}>
+                    <img src={require('../assets/image/icon.png')} style={{width: document.documentElement.clientWidth * 0.1 + 'px', height: document.documentElement.clientWidth * 0.1 + 'px'}} alt="签到"/>
+                </div>
                 <img src={require('../assets/image/banner.jpg')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.48 + 'px'}} alt=""/>
                 {
                     this.props.index.list.length > 0 ?
