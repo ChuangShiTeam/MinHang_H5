@@ -291,6 +291,7 @@ class Index extends Component {
                 selectedIndex: event.nativeEvent.selectedSegmentIndex
             }
         });
+        this.handleLoadKey();
     }
 
     chooseLocation(question_id) {

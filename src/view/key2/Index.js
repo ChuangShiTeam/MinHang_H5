@@ -69,6 +69,30 @@ class Index extends Component {
 
         notification.remove('notification_2_upload_record', this);
 
+        this.props.dispatch({
+            type: 'key2/fetch',
+            data: {
+                description: '信念之钥',
+                key_id: '7a3995d91c9d41d5a946a990a53e45bb',
+                is_load: false,
+                key: {},
+                member_key: {},
+                selectedIndex: 0,
+                step1: 0,
+                step2: 0,
+                step3: 0,
+                task_id: '',
+                task: null,
+                member_task_list: [],
+                key_is_activated: false,
+                is_record: false,
+                file: null,
+                secene_id: '',
+                action: '',
+                scroll_top: 0
+            }
+        });
+
     }
 
     handleLoadKey() {

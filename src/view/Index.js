@@ -104,8 +104,8 @@ class Index extends Component {
                     :
                     null
                 }
-                <div style={{position: 'fixed', top: document.documentElement.clientWidth * 0.38 + 'px', right: document.documentElement.clientWidth* 0.01 + 'px'}} onClick={this.handleMemberSign.bind(this)}>
-                    <img src={require('../assets/image/icon.png')} style={{width: document.documentElement.clientWidth * 0.1 + 'px', height: document.documentElement.clientWidth * 0.1 + 'px'}} alt="签到"/>
+                <div style={{zIndex: 9, position: 'fixed', top: document.documentElement.clientWidth * 0.38 + 'px', right: document.documentElement.clientWidth* 0.01 + 'px'}} onClick={this.handleMemberSign.bind(this)}>
+                    <img src={require('../assets/image/icon.png')} style={{width: document.documentElement.clientWidth * 0.2 + 'px', height: document.documentElement.clientWidth * 0.1 + 'px'}} alt="签到"/>
                 </div>
                 <img src={require('../assets/image/banner.jpg')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.48 + 'px'}} alt=""/>
                 {
