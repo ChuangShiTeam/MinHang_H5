@@ -56,6 +56,10 @@ class Index extends Component {
             });
         });
 
+        notification.on('receiveMessage', this, function (data) {
+            this.handleLoadKey();
+        });
+
     }
 
     componentWillUnmount() {
@@ -578,7 +582,10 @@ class Index extends Component {
                                                                 <WhiteSpace size="lg"/>
                                                                 <WhiteSpace size="lg"/>
                                                                 <WhiteSpace size="lg"/>
-                                                                按手印并上传手印图片完成任务
+                                                                <div style={{textAlign: 'center'}}>
+                                                                    按手印并上传手印图片完成任务
+                                                                </div>
+
                                                             </div>
                                                             :
                                                             ''
