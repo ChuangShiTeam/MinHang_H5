@@ -259,25 +259,27 @@ class Index extends Component {
                 is_load: false
             }
         });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitRecordTask(data.file_id);
-                }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key2/fetch',
-                    data: {
-                        is_load: true
+        setTimeout(function() {
+            http.request({
+                url: '/wechat/download/media',
+                data: {
+                    media_id: media_id
+                },
+                success: function (data) {
+                    if (data.file_id) {
+                        this.handleSubmitRecordTask(data.file_id);
                     }
-                });
-            }.bind(this)
-        });
+                }.bind(this),
+                complete: function () {
+                    this.props.dispatch({
+                        type: 'key2/fetch',
+                        data: {
+                            is_load: true
+                        }
+                    });
+                }.bind(this)
+            });
+        }.bind(this, media_id), 2000);
     }
 
     handleSubmitRecordTask(file_id) {
