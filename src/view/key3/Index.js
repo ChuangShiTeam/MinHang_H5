@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {createForm} from "rc-form";
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio, Result, Icon, Toast} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, TextareaItem, Result, Icon, Toast} from 'antd-mobile';
 
-import constant from '../../util/constant';
 import http from '../../util/http';
 
 class Index extends Component {
@@ -28,18 +27,18 @@ class Index extends Component {
                 let location_list = this.props.key3.location_list;
                 let question_id = this.props.key3.question_id;
                 if (location_list.length > 0) {
-                     let index = location_list.findIndex(location => location.question_id === question_id);
-                     if (index === -1) {
-                         location_list.push({
-                             question_id: question_id,
-                             question_answer: loc.poiaddress
-                         })
-                     } else {
-                         location_list[index] = {
-                             question_id: question_id,
-                             question_answer: loc.poiaddress
-                         };
-                     }
+                    let index = location_list.findIndex(location => location.question_id === question_id);
+                    if (index === -1) {
+                        location_list.push({
+                            question_id: question_id,
+                            question_answer: loc.poiaddress
+                        })
+                    } else {
+                        location_list[index] = {
+                            question_id: question_id,
+                            question_answer: loc.poiaddress
+                        };
+                    }
                 } else {
                     location_list.push({
                         question_id: question_id,
@@ -76,6 +75,8 @@ class Index extends Component {
                 member_task_list: [],
                 location_list: [],
                 question_id: '',
+                question:{},
+                is_see_answer: false,
                 is_open_map: false,
                 key_is_activated: false,
                 is_record: false,
@@ -119,7 +120,8 @@ class Index extends Component {
                         member_task_list: member_task_list,
                         step1: step1,
                         step2: step2,
-                        key_is_activated: key_is_activated
+                        key_is_activated: key_is_activated,
+                        is_see_answer: false
                     }
                 });
             }.bind(this),
@@ -136,14 +138,51 @@ class Index extends Component {
         });
     }
 
-    handleRecognizeQrcode(task_id) {
-        this.props.dispatch({
-            type: 'key3/fetch',
-            data: {
-                task_id: task_id
+    handleQRCode() {
+        let that = this;
+        window.wx.scanQRCode({
+            needResult: 1,
+            scanType: ["qrCode"],
+            success: function (response) {
+                let result = '';
+                try {
+                    result = JSON.parse(response.resultStr);
+                } catch (e) {
+                    Toast.fail('请扫描正确二维码', 2);
+                }
+
+                if (result && result.task_id) {
+                    http.request({
+                        url: '/mobile/minhang/task/check',
+                        data: {
+                            task_id: result.task_id,
+                            action: that.props.key3.selectedIndex === 0 ?'loadLoactionTask':'loadLoactionQuestionTask'
+                        },
+                        success: function (data) {
+                            if (data) {
+                                Toast.fail(data, 2);
+                            } else {
+                                that.props.dispatch({
+                                    type: 'key3/fetch',
+                                    data: {
+                                        task_id: result.task_id,
+                                        secene_id: result.secene_id,
+                                        action: result.action
+                                    }
+                                });
+                                that.handleLoadTask(result.task_id);
+                            }
+                        },
+                        complete: function () {
+
+                        }
+                    });
+
+                } else {
+                    Toast.fail('请扫描正确二维码', 2);
+                }
             }
         });
-        this.handleLoadTask(task_id);
     }
 
     handleLoadTask(task_id) {
@@ -161,17 +200,22 @@ class Index extends Component {
             success: function (data) {
                 let step1 = this.props.key3.step1;
                 let step2 = this.props.key3.step2;
+                let question = this.props.key3.question;
                 if (this.props.key3.selectedIndex === 0) {
                     step1 = 1;
                 } else if (this.props.key3.selectedIndex === 1) {
                     step2 = 1;
+                    if (data.task.question_list.length > 0) {
+                        question = data.task.question_list[parseInt(data.task.question_list.length*Math.random())];
+                    }
                 }
                 this.props.dispatch({
                     type: 'key3/fetch',
                     data: {
                         task: data.task,
                         step1: step1,
-                        step2: step2
+                        step2: step2,
+                        question: question
                     }
                 });
             }.bind(this),
@@ -227,28 +271,35 @@ class Index extends Component {
     handleSubmitQuestionTask() {
         this.props.form.validateFields((errors, values) => {
             if (!errors) {
-                let question_list = this.props.key3.task.question_list;
-                let member_question_list = [];
-                for (let i = 0; i < question_list.length; i++) {
+                if (this.props.key3.is_see_answer) {
+                    let member_question_list = [];
                     member_question_list.push({
-                        question_id: question_list[i].question_id,
-                        member_answer: values['question_answer_' + i]
-                    })
-                }
-                values.member_question_list = member_question_list;
-                values.task_id = this.props.key3.task.task_id;
-                values.key_activated_step = this.props.key3.selectedIndex;
-                values.member_task_type =  this.props.key3.selectedIndex === 0? 'LOCATION_QUESTION' : 'INFO_QUESTION';
-                http.request({
-                    url: '/mobile/minhang/task/member/complete',
-                    data: values,
-                    success: function (data) {
-                        this.handelSubmitResponse();
-                    }.bind(this),
-                    complete() {
+                        question_id: this.props.key3.question.question_id,
+                        member_answer: values['question_answer_0']
+                    });
+                    values.member_question_list = member_question_list;
+                    values.task_id = this.props.key3.task.task_id;
+                    values.key_activated_step = this.props.key3.selectedIndex;
+                    values.member_task_type =  this.props.key3.selectedIndex === 0? 'LOCATION_QUESTION' : 'INFO_QUESTION';
+                    http.request({
+                        url: '/mobile/minhang/task/member/complete',
+                        data: values,
+                        success: function (data) {
+                            this.handelSubmitResponse();
+                        }.bind(this),
+                        complete() {
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    this.props.dispatch({
+                        type: 'key3/fetch',
+                        data: {
+                            is_see_answer: true
+                        }
+                    });
+                }
+
             }
         });
     }
@@ -306,7 +357,7 @@ class Index extends Component {
 
     handleCreateHistory() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -320,7 +371,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -331,7 +382,7 @@ class Index extends Component {
 
     handleItineraryRestart() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key3/fetch',
             data: {
                 is_load: false
             }
@@ -350,7 +401,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key3/fetch',
                     data: {
                         is_load: true
                     }
@@ -370,7 +421,7 @@ class Index extends Component {
                 {
                     this.props.key3.is_open_map?
                         <iframe id="mapPage" style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}
-                            src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
+                                src="http://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
                         </iframe>
                         :
                         <div>
@@ -389,7 +440,7 @@ class Index extends Component {
                                             <WhiteSpace size="xl"/>
                                             <WingBlank size="md">
                                                 <div className="upload-image">
-                                                    <img src={require('../../assets/image/key3.png')} alt=""/>
+                                                    <img src={require('../../assets/image/key3_light.png')} alt=""/>
                                                     <WhiteSpace size="xl"/>
                                                     <div className="upload-image-tip">
                                                         恭喜你完成任务获得信息钥匙一枚
@@ -403,14 +454,14 @@ class Index extends Component {
                                         </div>
                                         :
                                         <div>
-                                            <SegmentedControl style={{height: '0.8rem'}} selectedIndex={this.props.key3.selectedIndex} values={['标注位置', '答题']} onChange={this.handleSegmentedControl.bind(this)}/>
+                                            <SegmentedControl style={{height: '0.8rem'}} selectedIndex={this.props.key3.selectedIndex} values={['标注位置', '回答问题']} onChange={this.handleSegmentedControl.bind(this)}/>
                                             <WhiteSpace size="lg"/>
                                             <WhiteSpace size="lg"/>
                                             {
                                                 this.props.key3.selectedIndex === 0?
                                                     <div>
                                                         <Steps current={this.props.key3.step1} direction="horizontal">
-                                                            <Step title="识别二维码" description=""/>
+                                                            <Step title="扫描二维码" description=""/>
                                                             <Step title="标注位置" description=""/>
                                                             <Step title="完成任务" description=""/>
                                                         </Steps>
@@ -427,13 +478,7 @@ class Index extends Component {
                                                                     <WhiteSpace size="lg"/>
                                                                     <WhiteSpace size="lg"/>
                                                                     <WingBlank size="md">
-                                                                        <div className="qrcode-image" onClick={this.handleRecognizeQrcode.bind(this, '5f8af80e33c94dcf9952220c31274fe4')}>
-                                                                            <img src={constant.host + '/upload/8acc2d49ad014f418878d1a16336c16b/5f8af80e33c94dcf9952220c31274fe4.png'} alt=""/>
-                                                                            <WhiteSpace size="xl"/>
-                                                                            <div className="qrcode-image-tip">
-                                                                                点击识别二维码
-                                                                            </div>
-                                                                        </div>
+                                                                        <Button onClick={this.handleQRCode.bind(this)}>扫描位置二维码</Button>
                                                                     </WingBlank>
                                                                 </div>
                                                                 :
@@ -506,8 +551,8 @@ class Index extends Component {
                                                     this.props.key3.selectedIndex === 1?
                                                         <div>
                                                             <Steps current={this.props.key3.step2} direction="horizontal">
-                                                                <Step title="识别二维码" description=""/>
-                                                                <Step title="答题" description=""/>
+                                                                <Step title="扫描二维码" description=""/>
+                                                                <Step title="回答问题" description=""/>
                                                                 <Step title="完成任务" description=""/>
                                                             </Steps>
                                                             {
@@ -523,13 +568,7 @@ class Index extends Component {
                                                                         <WhiteSpace size="lg"/>
                                                                         <WhiteSpace size="lg"/>
                                                                         <WingBlank size="md">
-                                                                            <div className="qrcode-image" onClick={this.handleRecognizeQrcode.bind(this, 'd14b3a04d7f24be088ef90b23f51cfb1')}>
-                                                                                <img src={constant.host + '/upload/8acc2d49ad014f418878d1a16336c16b/d14b3a04d7f24be088ef90b23f51cfb1.png'} alt=""/>
-                                                                                <WhiteSpace size="xl"/>
-                                                                                <div className="qrcode-image-tip">
-                                                                                    点击识别二维码
-                                                                                </div>
-                                                                            </div>
+                                                                            <Button onClick={this.handleQRCode.bind(this)}>扫描答题二维码</Button>
                                                                         </WingBlank>
                                                                     </div>
                                                                     :
@@ -542,111 +581,35 @@ class Index extends Component {
                                                                             this.props.key3.task?
                                                                                 <div>
                                                                                     {
-                                                                                        this.props.key3.task.task_type === 'QUESTION' ?
+                                                                                        this.props.key3.task.question_list.length > 0 && this.props.key3.question.question_title?
                                                                                             <div>
-                                                                                                {
-                                                                                                    this.props.key3.task.question_list.map((question, index) => {
-                                                                                                        if (question.question_type === 'RADIO') {
-                                                                                                            return (
-                                                                                                                <div key={index}>
-                                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                                    </List>
-                                                                                                                </div>
-                                                                                                            );
-                                                                                                        } else if (question.question_type === 'CHECKBOX') {
-                                                                                                            return (
-                                                                                                                <div>
-                                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                                    </List>
-                                                                                                                </div>
-                                                                                                            );
-                                                                                                        } else if (question.question_type === 'GAP_FILLING') {
-                                                                                                            return (
-                                                                                                                <div>
-                                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                                    <List renderHeader={() => question.question_title}>
-                                                                                                                        <TextareaItem
-                                                                                                                            {...getFieldProps(`question_answer_${index}`, {
-                                                                                                                                rules: [{
-                                                                                                                                    required: true,
-                                                                                                                                    message: '请填写答案'
-                                                                                                                                }],
-                                                                                                                                initialValue: ''
-                                                                                                                            })}
-                                                                                                                            error={!!getFieldError(`question_answer_${index}`)}
-                                                                                                                            clear
-                                                                                                                            title="答案"
-                                                                                                                            rows={5}
-                                                                                                                            autoHeight
-                                                                                                                            placeholder="请填写答案"
-                                                                                                                        />
-                                                                                                                    </List>
-                                                                                                                </div>
-                                                                                                            );
-                                                                                                        }
-                                                                                                        return null;
-                                                                                                    })
-                                                                                                }
+                                                                                                <WhiteSpace size="lg"/>
+                                                                                                <WhiteSpace size="lg"/>
+                                                                                                <List renderHeader={() => this.props.key3.question.question_title}
+                                                                                                      renderFooter={() => this.props.key3.is_see_answer?'正确答案：' + this.props.key3.question.question_answer_list[0].question_answer:null}
+                                                                                                >
+                                                                                                    <TextareaItem
+                                                                                                        {...getFieldProps(`question_answer_0`, {
+                                                                                                            rules: [{
+                                                                                                                required: true,
+                                                                                                                message: '请填写答案'
+                                                                                                            }],
+                                                                                                            initialValue: ''
+                                                                                                        })}
+                                                                                                        error={!!getFieldError(`question_answer_0`)}
+                                                                                                        clear
+                                                                                                        title="答案"
+                                                                                                        rows={5}
+                                                                                                        autoHeight
+                                                                                                        placeholder="请填写答案"
+                                                                                                    />
+                                                                                                </List>
                                                                                                 <WhiteSpace size="lg"/>
                                                                                                 <WhiteSpace size="lg"/>
                                                                                                 <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
                                                                                             </div>
                                                                                             :
-                                                                                            this.props.key3.task.task_type === 'PICTURE' ?
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WhiteSpace size="xl"/>
-                                                                                                    <WingBlank size="md">
-                                                                                                        <div className="upload-image" onClick={this.handleUploadImage.bind(this)}>
-                                                                                                            <img src={require('../../assets/image/upload-image.png')} alt=""/>
-                                                                                                            <WhiteSpace size="xl"/>
-                                                                                                            <div className="upload-image-tip">
-                                                                                                                {this.props.key3.task.task_name}
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </WingBlank>
-                                                                                                </div>
-                                                                                                :
-                                                                                                this.props.key3.task.task_type === 'RECORD' ?
-                                                                                                    <div>
-                                                                                                        <WhiteSpace size="xl"/>
-                                                                                                        <WhiteSpace size="xl"/>
-                                                                                                        <WhiteSpace size="xl"/>
-                                                                                                        <WhiteSpace size="xl"/>
-                                                                                                        <WhiteSpace size="xl"/>
-                                                                                                        <WhiteSpace size="xl"/>
-                                                                                                        <WingBlank size="md">
-                                                                                                            <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>开始录音</Button>
-                                                                                                            <WhiteSpace size="xl"/>
-                                                                                                            <div className="upload-image">
-                                                                                                                <div className="upload-image-tip">
-                                                                                                                    一分钟自动完成录音并上传
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <WhiteSpace size="xl"/>
-                                                                                                            <Button className="btn center-buttom" type="primary" onClick={this.handleStopRecord.bind(this)}>完成录音(上传录音)</Button>
-                                                                                                            <WhiteSpace size="xl"/>
-                                                                                                            <div className="upload-image">
-                                                                                                                <div className="upload-image-tip">
-                                                                                                                    {this.props.key3.task.task_name}
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </WingBlank>
-                                                                                                    </div>
-                                                                                                    : null
+                                                                                            null
                                                                                     }
                                                                                 </div>
                                                                                 :

@@ -7,9 +7,7 @@ import {
     WingBlank,
     SegmentedControl,
     Steps,
-    List,
     Button,
-    Radio,
     Result,
     Icon,
     Toast
@@ -367,7 +365,7 @@ class Index extends Component {
 
     handleCreateHistory() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key2/fetch',
             data: {
                 is_load: false
             }
@@ -381,7 +379,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key2/fetch',
                     data: {
                         is_load: true
                     }
@@ -392,7 +390,7 @@ class Index extends Component {
 
     handleItineraryRestart() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key2/fetch',
             data: {
                 is_load: false
             }
@@ -411,7 +409,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key2/fetch',
                     data: {
                         is_load: true
                     }
@@ -423,7 +421,6 @@ class Index extends Component {
 
 
     render() {
-        const Item = List.Item;
         const Step = Steps.Step;
 
         return (
@@ -443,7 +440,7 @@ class Index extends Component {
                                 <WhiteSpace size="xl"/>
                                 <WingBlank size="md">
                                     <div className="upload-image">
-                                        <img src={require('../../assets/image/key2.png')} alt=""/>
+                                        <img src={require('../../assets/image/key2_light.png')} alt=""/>
                                         <WhiteSpace size="xl"/>
                                         <div className="upload-image-tip">
                                             恭喜你完成任务获得信念钥匙一枚

@@ -5,13 +5,10 @@ import {
     WhiteSpace,
     WingBlank,
     Carousel,
-    List,
-    Button,
-    Icon
+    List
 } from 'antd-mobile';
 
 import http from '../../util/http';
-import constant from '../../util/constant';
 
 class Index extends Component {
     constructor(props) {
@@ -112,7 +109,7 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
-                            <img src={require('../../assets/image/key0.png')} alt=""/>
+                            <img src={require(this.props.history.poster_picture.file_path?'../../assets/image/key0_light.png':'../../assets/image/key0_ashy.png')} alt=""/>
                         </div>
                         <WhiteSpace size="lg"/>
                         {
@@ -149,7 +146,7 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
-                            <img src={require('../../assets/image/key1.png')} alt=""/>
+                            <img src={require('../../assets/image/key1_ashy.png')} alt=""/>
                         </div>
                         <WhiteSpace size="lg"/>
                         <WingBlank size="lg">
@@ -168,7 +165,7 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
-                            <img src={require('../../assets/image/key2.png')} alt=""/>
+                            <img src={require(this.props.history.party_history_record.file_path && this.props.history.party_song_record.file_path && this.props.history.hand_print_picture.file_path?'../../assets/image/key2_light.png':'../../assets/image/key2_ashy.png')} alt=""/>
                         </div>
                         <WhiteSpace size="md"/>
                         {
@@ -226,7 +223,7 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
-                            <img src={require('../../assets/image/key3.png')} alt=""/>
+                            <img src={require(this.props.history.location_question.length > 0 && this.props.history.info_question.question ?'../../assets/image/key3_light.png':'../../assets/image/key3_ashy.png')} alt=""/>
                         </div>
                         <WhiteSpace size="lg"/>
                         {
@@ -297,7 +294,7 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
-                            <img src={require('../../assets/image/key4.png')} alt=""/>
+                            <img src={require(this.props.history.timeline_event_question.length > 0 ?'../../assets/image/key4_light.png':'../../assets/image/key4_ashy.png')} alt=""/>
                         </div>
                         <WhiteSpace size="lg"/>
                         {
@@ -344,7 +341,7 @@ class Index extends Component {
                     <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}>
                         <WhiteSpace size="lg"/>
                         <div className="history-key">
-                            <img src={require('../../assets/image/key5.png')} alt=""/>
+                            <img src={require(this.props.history.video_question.length > 0 ?'../../assets/image/key5_light.png':'../../assets/image/key5_ashy.png')} alt=""/>
                         </div>
                         <WhiteSpace size="lg"/>
                         {

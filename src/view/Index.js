@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, List, Modal, Toast} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, List, Toast} from 'antd-mobile';
 
 import constant from '../util/constant';
 import http from '../util/http';
@@ -92,14 +92,13 @@ class Index extends Component {
     render() {
         const Item = List.Item;
         const Brief = Item.Brief;
-        const alert = Modal.alert;
 
         return (
             <div>
                 {
                     this.state.is_show_sign_success ?
                     <div style={{zIndex: 10, position:'fixed'}}>
-                        <img src={require('../assets/image/sign.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}}/>
+                        <img src={require('../assets/image/sign.png')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}} alt=""/>
                     </div>
                     :
                     null
@@ -110,23 +109,48 @@ class Index extends Component {
                 <img src={require('../assets/image/banner.jpg')} style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.48 + 'px'}} alt=""/>
                 {
                     this.props.index.list.length > 0 ?
-                        <List>
-                            {
-                                this.props.index.list.map((item) => {
-                                    return (
-                                        <Item
-                                            key={item.key_id}
-                                            arrow="horizontal"
-                                            thumb={<img src={item.key_image_file.file_path?constant.host + item.key_image_file.file_path:null} style={{width: '200px',  height: '96px'}} alt=""/>}
-                                            multipleLine
-                                            onClick={this.handleKey.bind(this, item.key_id)}
-                                        >
-                                            {item.key_name} <Brief>{item.key_description}</Brief>
-                                        </Item>
-                                    );
-                                })
-                            }
-                        </List>
+                        <div>
+                            <div style={{width: document.documentElement.clientWidth, height: document.documentElement.clientWidth * 0.2 + 'px'}}>
+                                {
+                                    this.props.index.list.map((item, index) => {
+                                        return (
+                                            <span key={index}>
+                                                <a href="javascript:;" onClick={this.handleKey.bind(this, item.key_id)}>
+                                                    <img
+                                                         style={{width: document.documentElement.clientWidth * 0.12 + 'px', marginTop: document.documentElement.clientWidth * 0.01 + 'px', marginLeft: document.documentElement.clientWidth * 0.04 + 'px'}}
+                                                         src={item.member_key.key_is_activated?require(`../assets/image/key${index}_light.png`):require(`../assets/image/key${index}_ashy.png`)}
+                                                         alt=""
+                                                    />
+                                                </a>
+                                            </span>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <List>
+                                {
+                                    this.props.index.list.map((item) => {
+                                        return (
+                                            <Item
+                                                style={{backgroundColor: '#EFEFEF'}}
+                                                key={item.key_id}
+                                                extra={<img
+                                                        style={{width: document.documentElement.clientWidth * 0.12 + 'px', height: document.documentElement.clientWidth * 0.12 + 'px'}}
+                                                        src={item.member_key.key_is_activated?require('../assets/image/percentage100.png'):item.member_key.task_complete_quantity/item.member_key.task_quantity === 1/3? require('../assets/image/percentage30.png'):item.member_key.task_complete_quantity/item.member_key.task_quantity === 1/2? require('../assets/image/percentage50.png'):require('../assets/image/percentage0.png')}
+                                                        alt=""
+                                                        />}
+                                                arrow="horizontal"
+                                                thumb={<img src={item.key_image_file.file_path?constant.host + item.key_image_file.file_path:null} style={{width: '200px',  height: '96px'}} alt=""/>}
+                                                multipleLine
+                                                onClick={this.handleKey.bind(this, item.key_id)}
+                                            >
+                                                {item.key_name} <Brief>{item.key_description}</Brief>
+                                            </Item>
+                                        );
+                                    })
+                                }
+                            </List>
+                        </div>
                         :
                         ''
                 }

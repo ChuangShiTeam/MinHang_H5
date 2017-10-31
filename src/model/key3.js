@@ -15,6 +15,8 @@ export default {
         member_task_list: [],
         location_list: [],
         question_id: '',
+        question:{},
+        is_see_answer: false,
         is_open_map: false,
         key_is_activated: false,
         is_record: false,

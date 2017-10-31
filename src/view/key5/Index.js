@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {createForm} from "rc-form";
 import {routerRedux} from 'dva/router';
-import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, List, Button, InputItem, TextareaItem, Radio, Result, Icon, Toast} from 'antd-mobile';
+import {ActivityIndicator, WhiteSpace, WingBlank, SegmentedControl, Steps, Button, List, TextareaItem, Result, Icon, Toast} from 'antd-mobile';
 
-import constant from '../../util/constant';
 import http from '../../util/http';
 import notification from '../../util/notification';
 
@@ -452,7 +451,7 @@ class Index extends Component {
 
     handleCreateHistory() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key5/fetch',
             data: {
                 is_load: false
             }
@@ -466,7 +465,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key5/fetch',
                     data: {
                         is_load: true
                     }
@@ -477,7 +476,7 @@ class Index extends Component {
 
     handleItineraryRestart() {
         this.props.dispatch({
-            type: 'key0/fetch',
+            type: 'key5/fetch',
             data: {
                 is_load: false
             }
@@ -496,7 +495,7 @@ class Index extends Component {
             }.bind(this),
             complete: function () {
                 this.props.dispatch({
-                    type: 'key0/fetch',
+                    type: 'key5/fetch',
                     data: {
                         is_load: true
                     }
@@ -506,11 +505,9 @@ class Index extends Component {
     }
 
     render() {
-        const Item = List.Item;
         const Step = Steps.Step;
         const {getFieldProps, getFieldError} = this.props.form;
 
-        const RadioItem = Radio.RadioItem;
         return (
             <div>
                 <WhiteSpace size="lg"/>
@@ -528,7 +525,7 @@ class Index extends Component {
                                 <WhiteSpace size="xl"/>
                                 <WingBlank size="md">
                                     <div className="upload-image">
-                                        <img src={require('../../assets/image/key5.png')} alt=""/>
+                                        <img src={require('../../assets/image/key5_light.png')} alt=""/>
                                         <WhiteSpace size="xl"/>
                                         <div className="upload-image-tip">
                                             恭喜你完成任务获得智慧钥匙一枚
@@ -581,52 +578,29 @@ class Index extends Component {
                                                                             <div>
                                                                                 {
                                                                                     this.props.key5.task.question_list.map((question, index) => {
-                                                                                        if (question.question_type === 'RADIO') {
-                                                                                            return (
-                                                                                                <div key={index}>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        } else if (question.question_type === 'CHECKBOX') {
-                                                                                            return (
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        } else if (question.question_type === 'GAP_FILLING') {
-                                                                                            return (
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-                                                                                                        <TextareaItem
-                                                                                                            {...getFieldProps(`question_answer_${index}`, {
-                                                                                                                rules: [{
-                                                                                                                    required: true,
-                                                                                                                    message: '请填写答案'
-                                                                                                                }],
-                                                                                                                initialValue: ''
-                                                                                                            })}
-                                                                                                            error={!!getFieldError(`question_answer_${index}`)}
-                                                                                                            clear
-                                                                                                            title="答案"
-                                                                                                            rows={5}
-                                                                                                            autoHeight
-                                                                                                            placeholder="请填写答案"
-                                                                                                        />
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        }
-                                                                                        return null;
+                                                                                        return (
+                                                                                            <div>
+                                                                                                <WhiteSpace size="lg"/>
+                                                                                                <WhiteSpace size="lg"/>
+                                                                                                <List renderHeader={() => question.question_title}>
+                                                                                                    <TextareaItem
+                                                                                                        {...getFieldProps(`question_answer_${index}`, {
+                                                                                                            rules: [{
+                                                                                                                required: true,
+                                                                                                                message: '请填写答案'
+                                                                                                            }],
+                                                                                                            initialValue: ''
+                                                                                                        })}
+                                                                                                        error={!!getFieldError(`question_answer_${index}`)}
+                                                                                                        clear
+                                                                                                        title="答案"
+                                                                                                        rows={5}
+                                                                                                        autoHeight
+                                                                                                        placeholder="请填写答案"
+                                                                                                    />
+                                                                                                </List>
+                                                                                            </div>
+                                                                                        )
                                                                                     })
                                                                                 }
                                                                                 <WhiteSpace size="lg"/>

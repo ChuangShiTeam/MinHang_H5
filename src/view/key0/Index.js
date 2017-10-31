@@ -7,9 +7,7 @@ import {
     WingBlank,
     SegmentedControl,
     Steps,
-    List,
     Button,
-    Radio,
     Toast
 } from 'antd-mobile';
 import Picture from '../Picture';
@@ -138,6 +136,11 @@ class Index extends Component {
                                         secene_id: result.secene_id,
                                         action: result.action
                                     }
+                                });
+                                notification.emit('sendMessage', {
+                                    targetId: '0',
+                                    action: 'loadMember',
+                                    content: ''
                                 });
                                 that.handleLoadTask(result.task_id);
                             }
@@ -318,15 +321,13 @@ class Index extends Component {
     }
 
     render() {
-        const Item = List.Item;
         const Step = Steps.Step;
-
         return (
             <div>
                 <WhiteSpace size="lg"/>
                 <WingBlank mode={20}>
                     {
-                        this.props.key0.step != 2 ?
+                        this.props.key0.step !== 2 ?
                             <div>
                                 <SegmentedControl style={{height: '0.8rem'}} selectedIndex={this.props.key0.selectedIndex}
                                                   values={['上传微笑照片']}/>
@@ -342,7 +343,7 @@ class Index extends Component {
 
                     }
                     {
-                        this.props.key0.step == 0 ?
+                        this.props.key0.step === 0 ?
                             <div>
                                 <WhiteSpace size="lg"/>
                                 <WhiteSpace size="lg"/>
@@ -359,13 +360,13 @@ class Index extends Component {
                             ''
                     }
                     {
-                        this.props.key0.step == 1 ?
+                        this.props.key0.step === 1 ?
                             <Picture id="0" task_name={this.props.key0.task.task_name}/>
                             :
                             ''
                     }
                     {
-                        this.props.key0.step == 2 ?
+                        this.props.key0.step === 2 ?
                             <div>
                                 <WhiteSpace size="xl"/>
                                 <WhiteSpace size="xl"/>
@@ -377,7 +378,7 @@ class Index extends Component {
                                 <WhiteSpace size="xl"/>
                                 <WingBlank size="md">
                                     <div className="upload-image">
-                                        <img src={require('../../assets/image/key0.png')} alt=""/>
+                                        <img src={require('../../assets/image/key0_light.png')} alt=""/>
                                         <WhiteSpace size="xl"/>
                                         <div className="upload-image-tip">
                                             恭喜你完成任务获得激情钥匙一枚

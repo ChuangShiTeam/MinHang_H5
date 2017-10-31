@@ -3,7 +3,6 @@ import {connect} from "dva";
 import {routerRedux} from "dva/router";
 import {ActivityIndicator, WhiteSpace, List} from 'antd-mobile';
 import http from "../util/http";
-import storage from "../util/storage";
 
 class My extends Component {
     constructor(props) {
@@ -54,8 +53,6 @@ class My extends Component {
 
     render() {
         const Item = List.Item;
-        const Brief = Item.Brief;
-
         return (
             <div>
                 <List>
@@ -71,7 +68,7 @@ class My extends Component {
                 <WhiteSpace size="lg"/>
                 <List>
                     <Item
-                        thumb={require('../assets/svg/history.svg')}
+                        thumb={require('../assets/image/book.png')}
                     >
                         我的纪念册
                     </Item>
@@ -79,7 +76,7 @@ class My extends Component {
                         this.props.my.history_list.map((history, index) =>
                             <Item
                                 key={index}
-                                thumb={require('../assets/svg/history.svg')}
+                                thumb={require('../assets/image/book.png')}
                                 arrow="horizontal"
                                 onClick={this.handleHistory.bind(this, history.member_history_id)}
                             >
