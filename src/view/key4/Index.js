@@ -169,7 +169,7 @@ class Index extends Component {
                     data: {
                         task: data.task,
                         step1: step1,
-                        step2: step2,
+                        step2: step2
                     }
                 });
             }.bind(this),
@@ -210,197 +210,6 @@ class Index extends Component {
                     }
                 });
             }
-        });
-    }
-
-    handleUploadRecord() {
-        window.wx.startRecord();
-        this.props.dispatch({
-            type: 'key4/fetch',
-            data: {
-                is_record: true
-            }
-        });
-        let that = this;
-        window.wx.onVoiceRecordEnd({
-            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
-            complete: function (res) {
-                var localId = res.localId;
-                window.wx.uploadVoice({
-                    localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
-                    isShowProgressTips: 1, // 默认为1，显示进度提示
-                    success: function (res) {
-                        var serverId = res.serverId; // 返回音频的服务器端ID
-                        that.handleDownLoadWecatVoice(serverId);
-                    }
-                });
-                that.props.dispatch({
-                    type: 'key4/fetch',
-                    data: {
-                        is_record: false
-                    }
-                });
-            }
-        });
-    }
-    handleStopRecord() {
-        let that = this;
-        window.wx.stopRecord({
-            success: function (res) {
-                var localId = res.localId;
-                window.wx.uploadVoice({
-                    localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
-                    isShowProgressTips: 1, // 默认为1，显示进度提示
-                    success: function (res) {
-                        var serverId = res.serverId; // 返回音频的服务器端ID
-                        that.handleDownLoadWecatVoice(serverId);
-                    }
-                });
-                that.props.dispatch({
-                    type: 'key4/fetch',
-                    data: {
-                        is_record: false
-                    }
-                });
-            }
-        });
-    }
-
-    handleDownLoadWecatVoice(media_id) {
-        this.props.dispatch({
-            type: 'key4/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitRecordTask(data.file_id);
-                }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key4/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleSubmitRecordTask(file_id) {
-        this.props.dispatch({
-            type: 'key4/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/mobile/minhang/task/member/complete',
-            data: {
-                task_id: this.props.key4.task_id,
-                member_record: {
-                    record_file: file_id
-                },
-                key_activated_step: this.props.key4.selectedIndex
-            },
-            success: function (data) {
-                this.handelSubmitResponse();
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key4/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleUploadImage() {
-        let that = this;
-        window.wx.chooseImage({
-            count: 1, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-            success: function (res) {
-                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                if (localIds && localIds.length === 1) {
-                    window.wx.uploadImage({
-                        localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
-                        isShowProgressTips: 1, // 默认为1，显示进度提示
-                        success: function (res) {
-                            var serverId = res.serverId; // 返回图片的服务器端ID
-                            that.handleDownLoadWecatImage(serverId);  //后台下载图片
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    handleDownLoadWecatImage(media_id) {
-        this.props.dispatch({
-            type: 'key4/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/wechat/download/media',
-            data: {
-                media_id: media_id
-            },
-            success: function (data) {
-                if (data.file_id) {
-                    this.handleSubmitImageTask(data.file_id);
-                }
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key4/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
-        });
-    }
-
-    handleSubmitImageTask(file_id) {
-        this.props.dispatch({
-            type: 'key4/fetch',
-            data: {
-                is_load: false
-            }
-        });
-        http.request({
-            url: '/mobile/minhang/task/member/complete',
-            data: {
-                task_id: this.props.key4.task_id,
-                member_picture: {
-                    picture_file: file_id
-                },
-                key_activated_step: this.props.key4.selectedIndex
-            },
-            success: function (data) {
-                this.handelSubmitResponse();
-            }.bind(this),
-            complete: function () {
-                this.props.dispatch({
-                    type: 'key4/fetch',
-                    data: {
-                        is_load: true
-                    }
-                });
-            }.bind(this)
         });
     }
 
@@ -447,6 +256,7 @@ class Index extends Component {
                 selectedIndex: event.nativeEvent.selectedSegmentIndex
             }
         });
+        this.handleLoadKey();
     }
 
     handleCreateHistory() {
@@ -573,113 +383,38 @@ class Index extends Component {
                                                         {
                                                             this.props.key4.task?
                                                                 <div>
-                                                                    {
-                                                                        this.props.key4.task.task_type === 'QUESTION' ?
-                                                                            <div>
-                                                                                {
-                                                                                    this.props.key4.task.question_list.map((question, index) => {
-                                                                                        if (question.question_type === 'RADIO') {
-                                                                                            return (
-                                                                                                <div key={index}>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        } else if (question.question_type === 'CHECKBOX') {
-                                                                                            return (
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        } else if (question.question_type === 'GAP_FILLING') {
-                                                                                            return (
-                                                                                                <div>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <WhiteSpace size="lg"/>
-                                                                                                    <List renderHeader={() => question.question_title}>
-                                                                                                        <TextareaItem
-                                                                                                            {...getFieldProps(`question_answer_${index}`, {
-                                                                                                                rules: [{
-                                                                                                                    required: true,
-                                                                                                                    message: '请填写答案'
-                                                                                                                }],
-                                                                                                                initialValue: ''
-                                                                                                            })}
-                                                                                                            error={!!getFieldError(`question_answer_${index}`)}
-                                                                                                            clear
-                                                                                                            title="答案"
-                                                                                                            rows={5}
-                                                                                                            autoHeight
-                                                                                                            placeholder="请填写答案"
-                                                                                                        />
-                                                                                                    </List>
-                                                                                                </div>
-                                                                                            );
-                                                                                        }
-                                                                                        return null;
-                                                                                    })
-                                                                                }
-                                                                                <WhiteSpace size="lg"/>
-                                                                                <WhiteSpace size="lg"/>
-                                                                                <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
-                                                                            </div>
-                                                                            :
-                                                                            this.props.key4.task.task_type === 'PICTURE' ?
-                                                                                <div>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WhiteSpace size="xl"/>
-                                                                                    <WingBlank size="md">
-                                                                                        <div className="upload-image" onClick={this.handleUploadImage.bind(this)}>
-                                                                                            <img src={require('../../assets/image/upload-image.png')} alt=""/>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <div className="upload-image-tip">
-                                                                                                {this.props.key4.task.task_name}
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </WingBlank>
-                                                                                </div>
-                                                                                :
-                                                                                this.props.key4.task.task_type === 'RECORD' ?
+                                                                    <div>
+                                                                        {
+                                                                            this.props.key4.task.question_list.map((question, index) => {
+                                                                                return (
                                                                                     <div>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WingBlank size="md">
-                                                                                            <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>开始录音</Button>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <div className="upload-image">
-                                                                                                <div className="upload-image-tip">
-                                                                                                    一分钟自动完成录音并上传
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <Button className="btn center-buttom" type="primary" onClick={this.handleStopRecord.bind(this)}>完成录音(上传录音)</Button>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <div className="upload-image">
-                                                                                                <div className="upload-image-tip">
-                                                                                                    {this.props.key4.task.task_name}
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </WingBlank>
+                                                                                        <WhiteSpace size="lg"/>
+                                                                                        <WhiteSpace size="lg"/>
+                                                                                        <List renderHeader={() => question.question_title}>
+                                                                                            <TextareaItem
+                                                                                                {...getFieldProps(`question_answer_${index}`, {
+                                                                                                    rules: [{
+                                                                                                        required: true,
+                                                                                                        message: '请填写答案'
+                                                                                                    }],
+                                                                                                    initialValue: ''
+                                                                                                })}
+                                                                                                error={!!getFieldError(`question_answer_${index}`)}
+                                                                                                clear
+                                                                                                title="答案"
+                                                                                                rows={5}
+                                                                                                autoHeight
+                                                                                                placeholder="请填写答案"
+                                                                                            />
+                                                                                        </List>
                                                                                     </div>
-                                                                                    : null
-                                                                    }
+                                                                                );
+                                                                            })
+                                                                        }
+                                                                        <WhiteSpace size="lg"/>
+                                                                        <WhiteSpace size="lg"/>
+                                                                        <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
+                                                                    </div>
                                                                 </div>
                                                                 :
                                                                 ''
@@ -741,112 +476,35 @@ class Index extends Component {
                                                                 this.props.key4.task?
                                                                     <div>
                                                                         {
-                                                                            this.props.key4.task.task_type === 'QUESTION' ?
-                                                                                <div>
-                                                                                    {
-                                                                                        this.props.key4.task.question_list.map((question, index) => {
-                                                                                            if (question.question_type === 'RADIO') {
-                                                                                                return (
-                                                                                                    <div key={index}>
-                                                                                                        <WhiteSpace size="lg"/>
-                                                                                                        <WhiteSpace size="lg"/>
-                                                                                                        <List renderHeader={() => question.question_title}>
-
-                                                                                                        </List>
-                                                                                                    </div>
-                                                                                                );
-                                                                                            } else if (question.question_type === 'CHECKBOX') {
-                                                                                                return (
-                                                                                                    <div>
-                                                                                                        <WhiteSpace size="lg"/>
-                                                                                                        <WhiteSpace size="lg"/>
-                                                                                                        <List renderHeader={() => question.question_title}>
-
-                                                                                                        </List>
-                                                                                                    </div>
-                                                                                                );
-                                                                                            } else if (question.question_type === 'GAP_FILLING') {
-                                                                                                return (
-                                                                                                    <div>
-                                                                                                        <WhiteSpace size="lg"/>
-                                                                                                        <WhiteSpace size="lg"/>
-                                                                                                        <List renderHeader={() => question.question_title}>
-                                                                                                            <TextareaItem
-                                                                                                                {...getFieldProps(`question_answer_${index}`, {
-                                                                                                                    rules: [{
-                                                                                                                        required: true,
-                                                                                                                        message: '请填写答案'
-                                                                                                                    }],
-                                                                                                                    initialValue: ''
-                                                                                                                })}
-                                                                                                                error={!!getFieldError(`question_answer_${index}`)}
-                                                                                                                clear
-                                                                                                                title="答案"
-                                                                                                                rows={5}
-                                                                                                                autoHeight
-                                                                                                                placeholder="请填写答案"
-                                                                                                            />
-                                                                                                        </List>
-                                                                                                    </div>
-                                                                                                );
-                                                                                            }
-                                                                                            return null;
-                                                                                        })
-                                                                                    }
-                                                                                    <WhiteSpace size="lg"/>
-                                                                                    <WhiteSpace size="lg"/>
-                                                                                    <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
-                                                                                </div>
-                                                                                :
-                                                                                this.props.key4.task.task_type === 'PICTURE' ?
+                                                                            this.props.key4.task.question_list.map((question, index) => {
+                                                                                return (
                                                                                     <div>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WhiteSpace size="xl"/>
-                                                                                        <WingBlank size="md">
-                                                                                            <div className="upload-image" onClick={this.handleUploadImage.bind(this)}>
-                                                                                                <img src={require('../../assets/image/upload-image.png')} alt=""/>
-                                                                                                <WhiteSpace size="xl"/>
-                                                                                                <div className="upload-image-tip">
-                                                                                                    {this.props.key4.task.task_name}
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </WingBlank>
+                                                                                        <WhiteSpace size="lg"/>
+                                                                                        <WhiteSpace size="lg"/>
+                                                                                        <List renderHeader={() => question.question_title}>
+                                                                                            <TextareaItem
+                                                                                                {...getFieldProps(`question_answer_${index}`, {
+                                                                                                    rules: [{
+                                                                                                        required: true,
+                                                                                                        message: '请填写答案'
+                                                                                                    }],
+                                                                                                    initialValue: ''
+                                                                                                })}
+                                                                                                error={!!getFieldError(`question_answer_${index}`)}
+                                                                                                clear
+                                                                                                title="答案"
+                                                                                                rows={5}
+                                                                                                autoHeight
+                                                                                                placeholder="请填写答案"
+                                                                                            />
+                                                                                        </List>
                                                                                     </div>
-                                                                                    :
-                                                                                    this.props.key4.task.task_type === 'RECORD' ?
-                                                                                        <div>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <WhiteSpace size="xl"/>
-                                                                                            <WingBlank size="md">
-                                                                                                <Button className="btn center-buttom" type="primary" onClick={this.handleUploadRecord.bind(this)}>开始录音</Button>
-                                                                                                <WhiteSpace size="xl"/>
-                                                                                                <div className="upload-image">
-                                                                                                    <div className="upload-image-tip">
-                                                                                                        一分钟自动完成录音并上传
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <WhiteSpace size="xl"/>
-                                                                                                <Button className="btn center-buttom" type="primary" onClick={this.handleStopRecord.bind(this)}>完成录音(上传录音)</Button>
-                                                                                                <WhiteSpace size="xl"/>
-                                                                                                <div className="upload-image">
-                                                                                                    <div className="upload-image-tip">
-                                                                                                        {this.props.key4.task.task_name}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </WingBlank>
-                                                                                        </div>
-                                                                                        : null
+                                                                                );
+                                                                            })
                                                                         }
+                                                                        <WhiteSpace size="lg"/>
+                                                                        <WhiteSpace size="lg"/>
+                                                                        <Button className="btn" type="primary" onClick={this.handleSubmitQuestionTask.bind(this)}>提交</Button>
                                                                     </div>
                                                                     :
                                                                     ''
