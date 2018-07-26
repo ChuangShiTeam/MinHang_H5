@@ -4,16 +4,23 @@ import storage from "./storage";
 
 function getQueryString(name) {
     let url = document.location.href;
-    let reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, 'i');
-    let r = url.substr(url.indexOf('?') + 1).match(reg);
-    if (r !== null) {
-        return unescape(r[2]);
+    //let reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, 'i');
+    let searchs = url.substr(url.lastIndexOf('?')).split("&");
+
+    for (let search of searchs) {
+        if (search.indexOf(name + "=") > -1) {
+            return decodeURIComponent(decodeURIComponent(search.split("=")[1]));
+        }
     }
+    // let r = url.substr(url.indexOf('?') + 1).match(reg);
+    // if (r !== null) {
+    //     return unescape(r[2]);
+    // }
     return '';
 }
 
 function auth() {
-    let open_id = getQueryString('open_id');
+    let open_id = getQueryString('openId');
     if (open_id === '') {
         let token = storage.getToken();
 
